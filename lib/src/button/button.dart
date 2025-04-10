@@ -62,7 +62,7 @@ class VantButton extends StatelessWidget {
   final EdgeInsetsGeometry? padding;
 
   const VantButton({
-    Key? key,
+    super.key,
     this.text,
     this.child,
     this.type = VantButtonType.normal,
@@ -77,7 +77,7 @@ class VantButton extends StatelessWidget {
     this.onPressed,
     this.color,
     this.padding,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
