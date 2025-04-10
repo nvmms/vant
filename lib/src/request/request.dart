@@ -134,13 +134,17 @@ class _VantRequestState<T> extends State<VantRequest<T>> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: widget.provider,
-      child: Selector<VantRequestProvider<T>, (List<T>, VantRequestStatus)>(
+      child:
+          Selector<VantRequestProvider<T>, (List<T>, VantRequestStatus, int)>(
         selector: (context, provider) => (
           provider.data,
           provider.status,
+          provider.data.length,
         ),
         shouldRebuild: (previous, next) =>
-            previous.$2 != next.$2 || previous.$1 != next.$1,
+            previous.$1 != next.$1 ||
+            previous.$2 != next.$2 ||
+            previous.$3 != next.$3,
         builder: (context, value, child) {
           switch (value.$2) {
             case VantRequestStatus.loading:
@@ -197,7 +201,7 @@ class _VantRequestState<T> extends State<VantRequest<T>> {
                 },
                 child: widget.builder?.call(context, value.$1) ??
                     ListView.builder(
-                      itemCount: value.$1.length,
+                      itemCount: value.$3,
                       itemBuilder: (context, index) => widget.itemBuilder!(
                         context,
                         value.$1[index],
