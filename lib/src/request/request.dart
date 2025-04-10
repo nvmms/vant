@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vant/src/empty/empty.dart';
+import 'package:vant/vant.dart';
 
 enum VantRequestStatus {
   loading,
@@ -140,15 +141,27 @@ class _VantRequestState<T> extends State<VantRequest<T>> {
                   );
             case VantRequestStatus.empty:
               return widget.empty ??
-                  const VantEmpty(
+                  VantEmpty(
                     description: "暂无更多数据",
                     type: VantEmptyType.normal,
+                    bottom: VantButton(
+                      text: "刷新",
+                      onPressed: () {
+                        widget.provider.refresh();
+                      },
+                    ),
                   );
             case VantRequestStatus.error:
               return widget.error?.call(widget.provider.error) ??
                   VantEmpty(
                     description: widget.provider.error,
                     type: VantEmptyType.error,
+                    bottom: VantButton(
+                      text: "刷新",
+                      onPressed: () {
+                        widget.provider.refresh();
+                      },
+                    ),
                   );
             case VantRequestStatus.complete:
               return EasyRefresh(
