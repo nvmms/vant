@@ -136,9 +136,9 @@ class _VantRequestState<T> extends State<VantRequest<T>> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: widget.provider,
-      child: Selector<VantRequestProvider<T>, (int, VantRequestStatus)>(
+      child: Selector<VantRequestProvider<T>, (List<T>, VantRequestStatus)>(
         selector: (context, provider) => (
-          provider.data.length,
+          provider.data,
           provider.status,
         ),
         builder: (context, value, child) {
@@ -195,12 +195,12 @@ class _VantRequestState<T> extends State<VantRequest<T>> {
                   widget.provider.easyRefreshStatus = 2;
                   return widget.provider.loadMore();
                 },
-                child: widget.builder?.call(context, widget.provider.data) ??
+                child: widget.builder?.call(context, value.$1) ??
                     ListView.builder(
-                      itemCount: widget.provider.data.length,
+                      itemCount: value.$1.length,
                       itemBuilder: (context, index) => widget.itemBuilder!(
                         context,
-                        widget.provider.data[index],
+                        value.$1[index],
                         index,
                       ),
                     ),
