@@ -11,7 +11,6 @@ dependencies:
   flutter:
     sdk: flutter
   easy_refresh: ^3.4.0
-  path_provider: ^2.1.5
   provider: ^6.1.4
 
 dev_dependencies:
