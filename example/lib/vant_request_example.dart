@@ -11,9 +11,8 @@ class VantRequestExample extends StatelessWidget {
       print("onQuery $page $pageSize");
       Future.delayed(const Duration(milliseconds: 200), () {
         provider.complete(
-          data: List.generate(20, (index) => "$index"),
+          data: List.generate(20, (index) => "${DateTime.now()}"),
           totalRow: 100,
-          error: "asdfasdfasdf",
         );
       });
     };

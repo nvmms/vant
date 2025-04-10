@@ -1,9 +1,8 @@
 import 'dart:async';
+
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:vant/src/empty/empty.dart';
 import 'package:vant/vant.dart';
 
 enum VantRequestStatus {
@@ -19,8 +18,7 @@ class VantRequestProvider<T> extends ChangeNotifier {
   /// 1 EasyRefresh下拉刷新
   /// 2 EasyRefresh上拉加载
   int easyRefreshStatus = 0;
-  final List<T> data = [];
-  List<String> testData = [];
+  List<T> data = [];
   VantRequestQuery<T>? onQuery;
   final int pageSize = 20;
   int page = 1;
@@ -67,11 +65,11 @@ class VantRequestProvider<T> extends ChangeNotifier {
       return;
     }
     if (page == 1) {
-      this.data.clear();
-      notifyListeners();
+      this.data = data;
+    } else {
+      this.data.addAll(data);
     }
 
-    this.data.addAll(data);
     if (easyRefreshStatus == 1 && completer != null) {
       completer!.complete(IndicatorResult.success);
     } else if (easyRefreshStatus == 2 && completer != null) {
@@ -141,6 +139,8 @@ class _VantRequestState<T> extends State<VantRequest<T>> {
           provider.data,
           provider.status,
         ),
+        shouldRebuild: (previous, next) =>
+            previous.$2 != next.$2 || previous.$1 != next.$1,
         builder: (context, value, child) {
           switch (value.$2) {
             case VantRequestStatus.loading:
