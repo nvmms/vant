@@ -47,7 +47,7 @@ class VantRequestProvider<T> extends ChangeNotifier {
     return completer!.future;
   }
 
-  void complete(List<T> newData, {int? totalRow, String? error}) {
+  void complete({List<T>? data, int? totalRow, String? error}) {
     if (error != null) {
       this.error = error;
       if (easyRefreshStatus == 2 && completer != null) {
@@ -58,8 +58,17 @@ class VantRequestProvider<T> extends ChangeNotifier {
       }
       return;
     }
+    if (data == null) {
+      if (easyRefreshStatus == 2 && completer != null) {
+        completer!.complete(IndicatorResult.noMore);
+      } else {
+        status = VantRequestStatus.empty;
+        notifyListeners();
+      }
+      return;
+    }
 
-    this.data.addAll(newData);
+    this.data.addAll(data);
     if (easyRefreshStatus == 1 && completer != null) {
       completer!.complete(IndicatorResult.success);
     } else if (easyRefreshStatus == 2 && completer != null) {
@@ -144,11 +153,16 @@ class _VantRequestState<T> extends State<VantRequest<T>> {
                   VantEmpty(
                     description: "暂无更多数据",
                     type: VantEmptyType.normal,
-                    bottom: VantButton(
-                      text: "刷新",
-                      onPressed: () {
-                        widget.provider.refresh();
-                      },
+                    bottom: SizedBox(
+                      width: 100,
+                      height: 40,
+                      child: VantButton(
+                        text: "重试",
+                        type: VantButtonType.primary,
+                        onPressed: () {
+                          widget.provider.refresh();
+                        },
+                      ),
                     ),
                   );
             case VantRequestStatus.error:
@@ -156,11 +170,16 @@ class _VantRequestState<T> extends State<VantRequest<T>> {
                   VantEmpty(
                     description: widget.provider.error,
                     type: VantEmptyType.error,
-                    bottom: VantButton(
-                      text: "刷新",
-                      onPressed: () {
-                        widget.provider.refresh();
-                      },
+                    bottom: SizedBox(
+                      width: 100,
+                      height: 40,
+                      child: VantButton(
+                        text: "重试",
+                        type: VantButtonType.primary,
+                        onPressed: () {
+                          widget.provider.refresh();
+                        },
+                      ),
                     ),
                   );
             case VantRequestStatus.complete:

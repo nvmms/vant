@@ -1,4 +1,3 @@
-import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:vant/vant.dart';
 
@@ -9,9 +8,13 @@ class VantRequestExample extends StatelessWidget {
   Widget build(BuildContext context) {
     VantRequestProvider<String> provider = VantRequestProvider<String>();
     provider.onQuery = (page, pageSize) {
+      print("onQuery $page $pageSize");
       Future.delayed(const Duration(milliseconds: 200), () {
-        provider.complete(List.generate(20, (index) => "$index"),
-            totalRow: 100);
+        provider.complete(
+          data: List.generate(20, (index) => "$index"),
+          totalRow: 100,
+          error: "asdfasdfasdf",
+        );
       });
     };
 
