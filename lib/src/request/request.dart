@@ -33,7 +33,6 @@ class VantRequestProvider<T> extends ChangeNotifier {
       completer!.complete(IndicatorResult.fail);
     } else {
       this.page = 1;
-      data.clear();
       this.onQuery!(this.page, this.pageSize);
     }
     return completer!.future;
@@ -66,6 +65,10 @@ class VantRequestProvider<T> extends ChangeNotifier {
         notifyListeners();
       }
       return;
+    }
+    if (page == 1) {
+      this.data.clear();
+      notifyListeners();
     }
 
     this.data.addAll(data);
