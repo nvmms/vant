@@ -11,7 +11,9 @@ class VantEmptyExample extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Vant Empty Example'),
         ),
-        body: const VantEmpty(),
+        body: const VantEmpty(
+          description: "暂无更多数据",
+        ),
       ),
     );
   }

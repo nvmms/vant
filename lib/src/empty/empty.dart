@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
 
+/// Empty状态类型
+enum VantEmptyType {
+  /// 默认，空状态
+  normal,
+
+  /// 错误
+  error,
+
+  /// 网络错误
+  network,
+
+  /// 搜索为空
+  search,
+}
+
 /// Vant风格的Empty组件
 class VantEmpty extends StatelessWidget {
-  /// 图片地址或类型
-  /// 1. 预设类型：error、network、search
-  /// 2. 网络图片：以http开头的URL
-  /// 3. 资源图片：assets路径
+  /// 空状态类型
+  final VantEmptyType type;
+
+  /// 图片地址，可以是网络图片(http开头)或资源图片(assets路径)
   final String? image;
 
   /// 图片大小
@@ -25,6 +40,7 @@ class VantEmpty extends StatelessWidget {
 
   const VantEmpty({
     super.key,
+    this.type = VantEmptyType.normal,
     this.image,
     this.imageSize = 120.0,
     this.imageWidget,
@@ -62,7 +78,16 @@ class VantEmpty extends StatelessWidget {
       return imageWidget!;
     }
 
-    // 默认图片
+    // 如果有图片地址，优先使用图片地址
+    if (image != null) {
+      return SizedBox(
+        width: imageSize,
+        height: imageSize,
+        child: _buildImageFromSource(image!),
+      );
+    }
+
+    // 否则使用类型对应的默认图标
     return SizedBox(
       width: imageSize,
       height: imageSize,
@@ -72,38 +97,37 @@ class VantEmpty extends StatelessWidget {
 
   // 根据类型获取图片
   Widget _getImageByType() {
-    if (image == null) {
-      // 默认图标
-      return _buildDefaultImage(
-        Icons.inbox_outlined,
-        Colors.grey.shade300,
-      );
-    }
-
-    // 处理预设类型
-    switch (image) {
-      case 'error':
+    switch (type) {
+      case VantEmptyType.error:
         return _buildDefaultImage(
           Icons.error_outline,
           Colors.red.shade300,
         );
-      case 'network':
+      case VantEmptyType.network:
         return _buildDefaultImage(
           Icons.wifi_off_outlined,
           Colors.grey.shade500,
         );
-      case 'search':
+      case VantEmptyType.search:
         return _buildDefaultImage(
           Icons.search,
           Colors.grey.shade500,
         );
+      case VantEmptyType.normal:
+      default:
+        return _buildDefaultImage(
+          Icons.inbox_outlined,
+          Colors.grey.shade300,
+        );
     }
+  }
 
-    // 处理图片地址
-    if (image!.startsWith('http')) {
+  // 从图片地址构建图片
+  Widget _buildImageFromSource(String source) {
+    if (source.startsWith('http')) {
       // 网络图片
       return Image.network(
-        image!,
+        source,
         fit: BoxFit.contain,
         width: imageSize,
         height: imageSize,
@@ -117,7 +141,7 @@ class VantEmpty extends StatelessWidget {
     } else {
       // 资源图片
       return Image.asset(
-        image!,
+        source,
         fit: BoxFit.contain,
         width: imageSize,
         height: imageSize,
