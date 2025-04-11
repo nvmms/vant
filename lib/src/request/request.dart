@@ -94,7 +94,7 @@ class VantRequest<T> extends StatefulWidget {
   const VantRequest({
     super.key,
     required this.provider,
-    required this.itemBuilder,
+    this.itemBuilder,
     this.builder,
     this.header,
     this.footer,
