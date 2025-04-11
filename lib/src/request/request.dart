@@ -130,6 +130,12 @@ class _VantRequestState<T> extends State<VantRequest<T>> {
   }
 
   @override
+  void didUpdateWidget(covariant VantRequest<T> oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    widget.provider.refresh();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: widget.provider,
