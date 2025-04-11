@@ -20,7 +20,6 @@ class VantRequestProvider<T> extends ChangeNotifier {
   int easyRefreshStatus = 0;
   List<T> data = [];
   VantRequestQuery<T>? onQuery;
-  final int pageSize = 20;
   int page = 1;
   String? error;
   Completer<IndicatorResult>? completer;
@@ -31,7 +30,7 @@ class VantRequestProvider<T> extends ChangeNotifier {
       completer!.complete(IndicatorResult.fail);
     } else {
       this.page = 1;
-      this.onQuery!(this.page, this.pageSize);
+      this.onQuery!(this.page);
     }
     return completer!.future;
   }
@@ -40,7 +39,7 @@ class VantRequestProvider<T> extends ChangeNotifier {
     if (onQuery == null) return IndicatorResult.fail;
     this.page++;
     completer = Completer<IndicatorResult>();
-    this.onQuery!(this.page, this.pageSize);
+    this.onQuery!(this.page);
     return completer!.future;
   }
 
@@ -89,7 +88,7 @@ typedef VantRequestItemBuilder<T> = Widget Function(
     BuildContext context, T item, int index);
 typedef VantRequestBuilder<T> = Widget Function(
     BuildContext context, List<T> item);
-typedef VantRequestQuery<T> = void Function(int page, int pageSize);
+typedef VantRequestQuery<T> = void Function(int page);
 
 class VantRequest<T> extends StatefulWidget {
   const VantRequest({
