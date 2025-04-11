@@ -7,8 +7,7 @@ class VantRequestExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     VantRequestProvider<String> provider = VantRequestProvider<String>();
-    provider.onQuery = (page, pageSize) {
-      print("onQuery $page $pageSize");
+    provider.onQuery = (page) {
       Future.delayed(const Duration(milliseconds: 200), () {
         provider.complete(
           data: List.generate(20, (index) => "${DateTime.now()}"),
