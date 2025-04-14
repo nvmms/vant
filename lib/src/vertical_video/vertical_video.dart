@@ -29,8 +29,7 @@ class _VantVerticalVideoPlayerState extends State<VantVerticalVideoPlayer> {
   late Directory _directory;
   CancelToken cancelToken = CancelToken();
   Dio dio = Dio();
-  bool _isVideoReady = false; // 视频是否已缓存
-
+  bool _isShow = false;
   String get _localFilePath {
     final uri = Uri.parse(widget.src);
     final fileExtension = uri.pathSegments.last.split('.').last;
@@ -43,43 +42,54 @@ class _VantVerticalVideoPlayerState extends State<VantVerticalVideoPlayer> {
     super.initState();
     getApplicationCacheDirectory().then((value) {
       _directory = value;
-      // _cacheVideo();
+      _cacheVideo();
     });
   }
 
   Future<void> _cacheVideo() async {
     try {
       final file = File(_localFilePath);
+
+      final headResponse = await dio.head(
+        widget.src,
+        options: Options(responseType: ResponseType.plain),
+      );
+
       if (await file.exists()) {
         final fileLength = await file.length();
-        if (fileLength == 0) {
-          await file.delete();
-          await dio.download(widget.src, _localFilePath,
-              cancelToken: cancelToken);
+        final contentLength =
+            headResponse.headers.value(HttpHeaders.contentLengthHeader);
+        final totalSize =
+            contentLength != null ? int.parse(contentLength) : null;
+
+        if (totalSize != null && fileLength >= totalSize) {
         } else {
-          await dio.download(
-            widget.src,
-            _localFilePath,
-            cancelToken: cancelToken,
-            options: Options(
-              headers: {
-                HttpHeaders.rangeHeader: 'bytes=$fileLength-',
-              },
-            ),
-          );
+          await _downloadFile(fileLength);
         }
       } else {
-        await dio.download(widget.src, _localFilePath,
-            cancelToken: cancelToken);
+        await _downloadFile(0);
       }
-
-      // 下载完成，设置标记，不初始化 controller
-      setState(() {
-        _isVideoReady = true;
-      });
+      _initVideoController();
     } catch (e) {
       debugPrint('下载失败: $e');
     }
+  }
+
+  Future<void> _downloadFile(int startByte) async {
+    await dio.download(
+      widget.src,
+      _localFilePath,
+      cancelToken: cancelToken,
+      options: Options(
+        headers: startByte > 0
+            ? {HttpHeaders.rangeHeader: 'bytes=$startByte-'}
+            : null,
+      ),
+      onReceiveProgress: (received, total) {
+        final totalReceived = startByte + received;
+        debugPrint("下载进度: $totalReceived/$total");
+      },
+    );
   }
 
   Future<void> _initVideoController() async {
@@ -90,10 +100,10 @@ class _VantVerticalVideoPlayerState extends State<VantVerticalVideoPlayer> {
     final controller = VideoPlayerController.file(file);
     await controller.initialize();
 
-    if (widget.autoPlay) {
+    controller.setLooping(true);
+    if (_isShow) {
       controller.play();
     }
-
     setState(() {
       _controller = controller;
     });
@@ -114,13 +124,22 @@ class _VantVerticalVideoPlayerState extends State<VantVerticalVideoPlayer> {
       key: Key('video-${widget.src}'),
       onVisibilityChanged: (info) {
         if (info.visibleFraction >= 1) {
-          // _initVideoController();
+          _isShow = true;
+          if (_controller != null && _controller!.value.isInitialized) {
+            _controller?.play();
+          }
+        } else {
+          if (info.visibleFraction <= 0.1) {
+            _controller?.pause();
+          }
         }
       },
       child: _controller != null && _controller!.value.isInitialized
-          ? AspectRatio(
-              aspectRatio: _controller!.value.aspectRatio,
-              child: VideoPlayer(_controller!),
+          ? Center(
+              child: AspectRatio(
+                aspectRatio: _controller!.value.aspectRatio,
+                child: VideoPlayer(_controller!),
+              ),
             )
           : const Center(child: CircularProgressIndicator()),
     );
@@ -380,7 +399,9 @@ class VantVerticalVideoItem<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (index == currentIndex) {
+    if (index == currentIndex ||
+        index >= currentIndex - 1 ||
+        index <= currentIndex + 1) {
       // 当前正在显示的page
       // 加载其余信息，
       return Container(
@@ -393,7 +414,7 @@ class VantVerticalVideoItem<T> extends StatelessWidget {
           ],
         ),
       );
-    } else if (index >= currentIndex - 1 || index <= currentIndex + 1) {
+    } else if (index >= currentIndex - 2 || index <= currentIndex + 2) {
       // 当前page的前后两页，默认显示图片
       return Container(
         color: Colors.black,
