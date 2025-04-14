@@ -13,27 +13,15 @@ class VantVerticalVideoExample extends StatelessWidget {
           data: [
             {
               "getVideoSrc":
-                  "https://vod.gbtjkj.top/customerTrans/28cb9b1d024990f6caba1e2f915b77ea/66985986-195fe219201-0007-0d19-47f-e8a1d.mp4?auth_key=1744598377-12e5e1fe7f1c46f7ad8199d04c53b178-0-036a3c4e0c74fb4867e19db8e148e27f"
+                  "https://vod.gbtjkj.top/3028e01210e971f0bfdd752281fc0102/592ce4b2eaca4e3593d174df831c6326-2d3f5df9679300c751a3460ae5bd15db-sd.m3u8?auth_key=1744662592-0-0-ab33a4c0c337c2e48466050c11db1f94"
             },
             {
               "getVideoSrc":
-                  "https://vod.gbtjkj.top/customerTrans/28cb9b1d024990f6caba1e2f915b77ea/37775ad0-195fa561cf6-0007-0d19-47f-e8a1d.mp4?auth_key=1744600281-7bc2948a4b934d75adfa500e4f1aab9b-0-e93103e67febf82e724defdc24413795"
+                  "https://vod.gbtjkj.top/a07854d7105471f0bf376eb3690d0102/6a6aebe619f6428fa0edaf2adbe92c6f-0a2dfeaba8e8c8dab4d34df40f86c3cf-sd.m3u8?auth_key=1744664384-0-0-1579ca46cd724e2c016238b46703872a"
             },
             {
               "getVideoSrc":
-                  "https://vod.gbtjkj.top/customerTrans/28cb9b1d024990f6caba1e2f915b77ea/43052309-195f9566535-0007-0d19-47f-e8a1d.mp4?auth_key=1744600292-7b4c4279064145be95df069ab04c5b4f-0-acc3f81db6c98901fd2327b88d8f7bad"
-            },
-            {
-              "getVideoSrc":
-                  "https://vod.gbtjkj.top/customerTrans/28cb9b1d024990f6caba1e2f915b77ea/449278b3-195f9543c4d-0007-0d19-47f-e8a1d.mp4?auth_key=1744601603-52e39ce011c34bd38530a7ced3424e25-0-00687596cf32526248b8ff426bccf9f9"
-            },
-            {
-              "getVideoSrc":
-                  "https://vod.gbtjkj.top/customerTrans/28cb9b1d024990f6caba1e2f915b77ea/288d6d99-195e64a3aec-0007-0d19-47f-e8a1d.mp4?auth_key=1744601634-859d963df2054962ae9e5635f3fdad43-0-c47f86358f2c99ba09574301112c40a3"
-            },
-            {
-              "getVideoSrc":
-                  "https://vod.gbtjkj.top/customerTrans/28cb9b1d024990f6caba1e2f915b77ea/27eab052-195a9366fe6-0007-0d19-47f-e8a1d.mp4?auth_key=1744601653-e346ffba1ceb42aba3abe406c2366153-0-daabe67c33125711b7e59a22802cbf09"
+                  "https://vod.gbtjkj.top/e0e758d2102d71f0a5511776b3ce0102/661dc23302ca4909ae9af2f938d6bab8-eace9e816ad8dc81dc6d843d18100dd8-sd.m3u8?auth_key=1744664414-0-0-22793defa62bbe9b83016421379adda9"
             },
           ],
           totalRow: 1,

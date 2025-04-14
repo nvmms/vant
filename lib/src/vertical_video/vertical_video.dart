@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:like_button/like_button.dart';
 import 'package:preload_page_view/preload_page_view.dart';
+import 'package:vant/src/vertical_video/video_cache_manager.dart';
 import 'package:vant/vant.dart';
 import 'package:video_player/video_player.dart';
 import 'dart:io';
@@ -28,7 +29,6 @@ class _VantVerticalVideoPlayerState extends State<VantVerticalVideoPlayer> {
   VideoPlayerController? _controller;
   late Directory _directory;
   CancelToken cancelToken = CancelToken();
-  Dio dio = Dio();
   bool _isShow = false;
   String get _localFilePath {
     final uri = Uri.parse(widget.src);
@@ -48,48 +48,17 @@ class _VantVerticalVideoPlayerState extends State<VantVerticalVideoPlayer> {
 
   Future<void> _cacheVideo() async {
     try {
-      final file = File(_localFilePath);
-
-      final headResponse = await dio.head(
-        widget.src,
-        options: Options(responseType: ResponseType.plain),
+      var videoCacheManager = VideoCacheManager(
+        videoUrl: widget.src,
+        savePath: _localFilePath,
+        cancelToken: cancelToken,
       );
-
-      if (await file.exists()) {
-        final fileLength = await file.length();
-        final contentLength =
-            headResponse.headers.value(HttpHeaders.contentLengthHeader);
-        final totalSize =
-            contentLength != null ? int.parse(contentLength) : null;
-
-        if (totalSize != null && fileLength >= totalSize) {
-        } else {
-          await _downloadFile(fileLength);
-        }
-      } else {
-        await _downloadFile(0);
-      }
-      _initVideoController();
+      videoCacheManager.addListener(() {
+        _initVideoController();
+      });
     } catch (e) {
       debugPrint('下载失败: $e');
     }
-  }
-
-  Future<void> _downloadFile(int startByte) async {
-    await dio.download(
-      widget.src,
-      _localFilePath,
-      cancelToken: cancelToken,
-      options: Options(
-        headers: startByte > 0
-            ? {HttpHeaders.rangeHeader: 'bytes=$startByte-'}
-            : null,
-      ),
-      onReceiveProgress: (received, total) {
-        final totalReceived = startByte + received;
-        debugPrint("下载进度: $totalReceived/$total");
-      },
-    );
   }
 
   Future<void> _initVideoController() async {
@@ -98,8 +67,12 @@ class _VantVerticalVideoPlayerState extends State<VantVerticalVideoPlayer> {
     if (!await file.exists()) return;
 
     final controller = VideoPlayerController.file(file);
+    controller.addListener(() {
+      if (controller.value.hasError) {
+        debugPrint('视频播放失败: ${controller.value.errorDescription}');
+      }
+    });
     await controller.initialize();
-
     controller.setLooping(true);
     if (_isShow) {
       controller.play();
