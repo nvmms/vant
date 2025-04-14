@@ -23,6 +23,14 @@ class VantRequestProvider<T> extends ChangeNotifier {
   int page = 1;
   String? error;
   Completer<IndicatorResult>? completer;
+  EasyRefreshController? _easyRefreshController;
+
+  VantRequestProvider() {
+    _easyRefreshController = EasyRefreshController(
+      controlFinishLoad: true,
+      controlFinishRefresh: true,
+    );
+  }
 
   Future<IndicatorResult> refresh() async {
     completer = Completer<IndicatorResult>();
@@ -69,7 +77,14 @@ class VantRequestProvider<T> extends ChangeNotifier {
       this.data.addAll(data);
     }
 
-    if (easyRefreshStatus == 1 && completer != null) {
+    if (easyRefreshStatus == 0) {
+      if (totalRow != null && this.data.length >= totalRow) {
+        print("totalRow: $totalRow");
+        print("this.data.length: ${this.data.length}");
+        _easyRefreshController?.finishLoad(IndicatorResult.noMore);
+        _easyRefreshController?.finishRefresh(IndicatorResult.noMore);
+      }
+    } else if (easyRefreshStatus == 1 && completer != null) {
       completer!.complete(IndicatorResult.success);
     } else if (easyRefreshStatus == 2 && completer != null) {
       if (totalRow != null && this.data.length >= totalRow) {
@@ -196,6 +211,7 @@ class _VantRequestState<T> extends State<VantRequest<T>> {
                   );
             case VantRequestStatus.complete:
               return EasyRefresh(
+                controller: widget.provider._easyRefreshController,
                 onRefresh: () {
                   widget.provider.easyRefreshStatus = 1;
                   return widget.provider.refresh();
@@ -204,6 +220,8 @@ class _VantRequestState<T> extends State<VantRequest<T>> {
                   widget.provider.easyRefreshStatus = 2;
                   return widget.provider.loadMore();
                 },
+                header: widget.header,
+                footer: widget.footer,
                 child: widget.builder?.call(context, value.$1) ??
                     ListView.builder(
                       itemCount: value.$3,
