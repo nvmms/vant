@@ -79,8 +79,6 @@ class VantRequestProvider<T> extends ChangeNotifier {
 
     if (easyRefreshStatus == 0) {
       if (totalRow != null && this.data.length >= totalRow) {
-        print("totalRow: $totalRow");
-        print("this.data.length: ${this.data.length}");
         _easyRefreshController?.finishLoad(IndicatorResult.noMore);
         _easyRefreshController?.finishRefresh(IndicatorResult.noMore);
       }
