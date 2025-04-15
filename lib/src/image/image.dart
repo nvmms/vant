@@ -42,6 +42,38 @@ class VantImage extends StatelessWidget {
     this.lazyLoad = false,
   });
 
+  /// 创建一个正方形图片
+  ///
+  /// [size] 图片的宽度和高度
+  const VantImage.square({
+    super.key,
+    required this.src,
+    required double size,
+    this.placeholder,
+    this.errorWidget,
+    this.fit = BoxFit.cover,
+    this.lazyLoad = false,
+    this.radius = 0.0,
+  })  : width = size,
+        height = size,
+        round = false;
+
+  /// 创建一个圆形图片
+  ///
+  /// [size] 图片的宽度和高度
+  const VantImage.round({
+    super.key,
+    required this.src,
+    required double size,
+    this.placeholder,
+    this.errorWidget,
+    this.fit = BoxFit.cover,
+    this.lazyLoad = false,
+  })  : width = size,
+        height = size,
+        radius = 0.0,
+        round = true;
+
   @override
   Widget build(BuildContext context) {
     final imageProvider = _getImageProvider();
