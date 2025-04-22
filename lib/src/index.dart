@@ -4,3 +4,4 @@ export 'empty/index.dart';
 export 'vertical_video/index.dart';
 export 'image/index.dart';
 export 'space/index.dart';
+export 'search/index.dart';
