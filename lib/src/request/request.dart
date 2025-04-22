@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
 
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/cupertino.dart';
@@ -123,8 +124,8 @@ class VantRequest<T> extends StatefulWidget {
   final VantRequestProvider<T> provider;
   final Header? refreshHeader;
   final Footer? refreshFooter;
-  final Widget? header;
-  final Widget? footer;
+  final Widget Function(BuildContext context)? header;
+  final Widget Function(BuildContext context)? footer;
   final Widget? loading;
   final Widget? empty;
   final Widget Function(String? errorMessage)? error;
@@ -238,13 +239,13 @@ class _VantRequestState<T> extends State<VantRequest<T>> {
                         var nowIndex = index;
                         if (widget.header != null && index == 0) {
                           if (index == 0) {
-                            return widget.header;
+                            return widget.header!(context);
                           } else {
                             nowIndex = nowIndex - 1;
                           }
                         }
                         if (widget.footer != null && index == trueLength - 1) {
-                          return widget.footer;
+                          return widget.footer!(context);
                         }
                         return widget.itemBuilder!(
                           context,
