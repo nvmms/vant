@@ -116,6 +116,7 @@ class VantRequest<T> extends StatefulWidget {
     this.error,
     this.refreshFooter,
     this.refreshHeader,
+    this.padding,
   }) : assert(itemBuilder != null || builder != null,
             "itemBuilder or builder is required");
 
@@ -129,6 +130,7 @@ class VantRequest<T> extends StatefulWidget {
   final Widget? empty;
   final Widget Function(String? errorMessage)? error;
   final VantRequestBuilder<T>? builder;
+  final EdgeInsets? padding;
 
   @override
   State<VantRequest<T>> createState() => _VantRequestState<T>();
@@ -233,6 +235,7 @@ class _VantRequestState<T> extends State<VantRequest<T>> {
                 footer: widget.refreshFooter,
                 child: widget.builder?.call(context, value.$1) ??
                     ListView.builder(
+                      padding: widget.padding,
                       itemCount: trueLength,
                       itemBuilder: (context, index) {
                         var nowIndex = index;
