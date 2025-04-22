@@ -143,7 +143,7 @@ class _VantSearchState extends State<VantSearch> {
                     (isDark ? Colors.grey[800] : Colors.grey[100]),
                 shape: widget.shape ??
                     RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(6),
                     ),
               ),
               child: Row(
