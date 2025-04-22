@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
 
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/cupertino.dart';
