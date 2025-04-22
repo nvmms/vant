@@ -114,13 +114,17 @@ class VantRequest<T> extends StatefulWidget {
     this.loading,
     this.empty,
     this.error,
+    this.refreshFooter,
+    this.refreshHeader,
   }) : assert(itemBuilder != null || builder != null,
             "itemBuilder or builder is required");
 
   final VantRequestItemBuilder<T>? itemBuilder;
   final VantRequestProvider<T> provider;
-  final Header? header;
-  final Footer? footer;
+  final Header? refreshHeader;
+  final Footer? refreshFooter;
+  final Widget? header;
+  final Widget? footer;
   final Widget? loading;
   final Widget? empty;
   final Widget Function(String? errorMessage)? error;
@@ -208,6 +212,13 @@ class _VantRequestState<T> extends State<VantRequest<T>> {
                     ),
                   );
             case VantRequestStatus.complete:
+              int trueLength = value.$3;
+              if (widget.header != null) {
+                trueLength = trueLength + 1;
+              }
+              if (widget.footer != null) {
+                trueLength = trueLength + 1;
+              }
               return EasyRefresh(
                 controller: widget.provider._easyRefreshController,
                 onRefresh: () {
@@ -218,16 +229,29 @@ class _VantRequestState<T> extends State<VantRequest<T>> {
                   widget.provider.easyRefreshStatus = 2;
                   return widget.provider.loadMore();
                 },
-                header: widget.header,
-                footer: widget.footer,
+                header: widget.refreshHeader,
+                footer: widget.refreshFooter,
                 child: widget.builder?.call(context, value.$1) ??
                     ListView.builder(
-                      itemCount: value.$3,
-                      itemBuilder: (context, index) => widget.itemBuilder!(
-                        context,
-                        value.$1[index],
-                        index,
-                      ),
+                      itemCount: trueLength,
+                      itemBuilder: (context, index) {
+                        var nowIndex = index;
+                        if (widget.header != null && index == 0) {
+                          if (index == 0) {
+                            return widget.header;
+                          } else {
+                            nowIndex = nowIndex - 1;
+                          }
+                        }
+                        if (widget.footer != null && index == trueLength - 1) {
+                          return widget.footer;
+                        }
+                        return widget.itemBuilder!(
+                          context,
+                          value.$1[nowIndex],
+                          nowIndex,
+                        );
+                      },
                     ),
               );
           }
