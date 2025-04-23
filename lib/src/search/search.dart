@@ -239,98 +239,130 @@ class _VantSearchState extends State<VantSearch> {
         ? BorderRadius.circular(100)
         : BorderRadius.circular(4);
 
-    return Container(
-      color: widget.background,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              if (widget.label != null) ...[
-                Text(
-                  widget.label!,
-                  style: theme.textTheme.bodyMedium,
-                ),
-                const SizedBox(width: 8),
-              ],
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: theme.cardColor,
-                    borderRadius: borderRadius,
+    return LayoutBuilder(builder: (context, constraints) {
+      // MediaQuery.of()
+      final hasExplicitHeight = constraints.hasBoundedHeight &&
+          constraints.maxHeight !=
+              MediaQuery.of(context).size.height - kToolbarHeight;
+      double height = hasExplicitHeight ? constraints.maxHeight : 54;
+
+      return Container(
+        height: height,
+        color: widget.background,
+        padding: const EdgeInsets.only(top: 10, left: 16, bottom: 10, right: 0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Row(
+              children: [
+                if (widget.label != null) ...[
+                  Text(
+                    widget.label!,
+                    style: theme.textTheme.bodyMedium,
                   ),
-                  child: Row(
-                    children: [
-                      const SizedBox(width: 12),
-                      Icon(
-                        widget.leftIcon,
-                        size: 20,
-                        color: theme.hintColor,
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: TextField(
-                          controller: _controller,
-                          focusNode: _focusNode,
-                          enabled: !widget.disabled,
-                          readOnly: widget.readonly,
-                          maxLength: widget.maxLength,
-                          textAlign: widget.inputAlign,
-                          autofocus: widget.autoFocus,
-                          decoration: InputDecoration(
-                            hintText: widget.placeholder,
-                            border: InputBorder.none,
-                            counterText: '',
-                            errorText: null,
-                            contentPadding:
-                                const EdgeInsets.symmetric(vertical: 12),
-                          ),
-                          style: widget.error
-                              ? TextStyle(color: theme.colorScheme.error)
-                              : null,
-                          onChanged: _handleChanged,
-                          onSubmitted: widget.onSearch,
+                  const SizedBox(width: 8),
+                ],
+                Expanded(
+                  child: Container(
+                    height: height - 20,
+                    decoration: BoxDecoration(
+                      color: theme.cardColor,
+                      borderRadius: borderRadius,
+                    ),
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 0, horizontal: 12),
+                    child: Row(
+                      children: [
+                        Icon(
+                          widget.leftIcon,
+                          size: 20,
+                          color: theme.hintColor,
                         ),
-                      ),
-                      if (_showClear)
-                        IconButton(
-                          icon: Icon(widget.clearIcon, size: 20),
-                          onPressed: _handleClear,
-                          splashRadius: 20,
-                        ),
-                      if (widget.rightIcon != null) ...[
                         const SizedBox(width: 8),
-                        Icon(widget.rightIcon, size: 20),
+                        Expanded(
+                          child: TextField(
+                            controller: _controller,
+                            focusNode: _focusNode,
+                            cursorHeight: 16,
+                            textAlignVertical: TextAlignVertical.center,
+                            enabled: !widget.disabled,
+                            readOnly: widget.readonly,
+                            maxLength: widget.maxLength,
+                            textAlign: widget.inputAlign,
+                            autofocus: widget.autoFocus,
+                            decoration: InputDecoration(
+                              hintText: widget.placeholder,
+                              border: InputBorder.none,
+                              counterText: '',
+                              errorText: null,
+                              contentPadding: const EdgeInsets.only(bottom: 3),
+                              isDense: true,
+                              suffixIconConstraints: const BoxConstraints(
+                                minWidth: 24,
+                                maxWidth: 24,
+                                minHeight: 18,
+                                maxHeight: 18,
+                              ),
+                              suffixIcon: _showClear
+                                  ? GestureDetector(
+                                      onTap: () {
+                                        _controller.clear();
+                                      },
+                                      child: Container(
+                                        margin: const EdgeInsets.only(left: 6),
+                                        decoration: BoxDecoration(
+                                          color: const Color(0xffc8c9cc),
+                                          borderRadius:
+                                              BorderRadius.circular(18),
+                                        ),
+                                        child:
+                                            const Icon(Icons.close, size: 12),
+                                      ),
+                                    )
+                                  : const SizedBox.shrink(),
+                            ),
+                            style: widget.error
+                                ? TextStyle(color: theme.colorScheme.error)
+                                : null,
+                            onChanged: _handleChanged,
+                            onSubmitted: widget.onSearch,
+                          ),
+                        ),
+                        if (widget.rightIcon != null) ...[
+                          const SizedBox(width: 8),
+                          Icon(widget.rightIcon, size: 20),
+                        ],
                       ],
-                    ],
+                    ),
+                  ),
+                ),
+                if (widget.showAction) ...[
+                  const SizedBox(width: 8),
+                  TextButton(
+                    onPressed: () {
+                      _focusNode.unfocus();
+                      widget.onCancel?.call();
+                    },
+                    child: Text(widget.actionText),
+                  ),
+                ] else
+                  const SizedBox(width: 16),
+              ],
+            ),
+            if (widget.errorMessage != null && widget.errorMessage!.isNotEmpty)
+              Padding(
+                padding: const EdgeInsets.only(top: 4, left: 12),
+                child: Text(
+                  widget.errorMessage!,
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: theme.colorScheme.error,
                   ),
                 ),
               ),
-              if (widget.showAction) ...[
-                const SizedBox(width: 8),
-                TextButton(
-                  onPressed: () {
-                    _focusNode.unfocus();
-                    widget.onCancel?.call();
-                  },
-                  child: Text(widget.actionText),
-                ),
-              ],
-            ],
-          ),
-          if (widget.errorMessage != null && widget.errorMessage!.isNotEmpty)
-            Padding(
-              padding: const EdgeInsets.only(top: 4, left: 12),
-              child: Text(
-                widget.errorMessage!,
-                style: theme.textTheme.bodySmall?.copyWith(
-                  color: theme.colorScheme.error,
-                ),
-              ),
-            ),
-        ],
-      ),
-    );
+          ],
+        ),
+      );
+    });
   }
 }
