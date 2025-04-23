@@ -19,6 +19,9 @@ class VantSearch extends StatefulWidget {
   /// 搜索框外部背景色
   final Color background;
 
+  /// 搜索框内部背景色
+  final Color inputColor;
+
   /// 输入的最大字符数
   final int? maxLength;
 
@@ -92,13 +95,14 @@ class VantSearch extends StatefulWidget {
   final VoidCallback? onBlur;
 
   const VantSearch({
-    Key? key,
+    super.key,
     this.value = '',
     this.label,
     this.name,
     this.shape = 'square',
     this.id,
-    this.background = const Color(0xFFF2F2F2),
+    this.background = Colors.white,
+    this.inputColor = const Color(0xfff7f8fa),
     this.maxLength,
     this.placeholder,
     this.clearable = true,
@@ -123,10 +127,10 @@ class VantSearch extends StatefulWidget {
     this.onClear,
     this.onFocus,
     this.onBlur,
-  }) : super(key: key);
+  });
 
   @override
-  _VantSearchState createState() => _VantSearchState();
+  State createState() => _VantSearchState();
 }
 
 enum ClearTrigger {
@@ -229,7 +233,6 @@ class _VantSearchState extends State<VantSearch> {
     _controller.clear();
     widget.onChange?.call('');
     widget.onClear?.call();
-    _updateClearVisibility();
   }
 
   @override
@@ -240,7 +243,6 @@ class _VantSearchState extends State<VantSearch> {
         : BorderRadius.circular(4);
 
     return LayoutBuilder(builder: (context, constraints) {
-      // MediaQuery.of()
       final hasExplicitHeight = constraints.hasBoundedHeight &&
           constraints.maxHeight !=
               MediaQuery.of(context).size.height - kToolbarHeight;
@@ -267,7 +269,7 @@ class _VantSearchState extends State<VantSearch> {
                   child: Container(
                     height: height - 20,
                     decoration: BoxDecoration(
-                      color: theme.cardColor,
+                      color: widget.inputColor,
                       borderRadius: borderRadius,
                     ),
                     padding:
@@ -306,9 +308,7 @@ class _VantSearchState extends State<VantSearch> {
                               ),
                               suffixIcon: _showClear
                                   ? GestureDetector(
-                                      onTap: () {
-                                        _controller.clear();
-                                      },
+                                      onTap: _handleClear,
                                       child: Container(
                                         margin: const EdgeInsets.only(left: 6),
                                         decoration: BoxDecoration(
