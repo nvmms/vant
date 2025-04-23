@@ -62,7 +62,7 @@ class VantRequestProvider<T> extends ChangeNotifier {
       }
       return;
     }
-    if (data == null) {
+    if (data == null || data.isEmpty) {
       if (easyRefreshStatus == 2 && completer != null) {
         completer!.complete(IndicatorResult.noMore);
       } else {
