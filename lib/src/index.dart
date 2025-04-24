@@ -3,5 +3,4 @@ export 'request/request.dart';
 export 'empty/index.dart';
 export 'vertical_video/index.dart';
 export 'image/index.dart';
-export 'space/index.dart';
-export 'search/index.dart';
+export 'action-bar/index.dart';
