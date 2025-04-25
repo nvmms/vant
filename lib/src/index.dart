@@ -6,3 +6,4 @@ export 'image/index.dart';
 export 'space/index.dart';
 export 'search/index.dart';
 export 'action-bar/index.dart';
+export 'cell/index.dart';
