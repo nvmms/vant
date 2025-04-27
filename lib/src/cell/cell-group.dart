@@ -18,8 +18,9 @@ class VanCellGroup extends StatelessWidget {
     final BorderRadius borderRadius = BorderRadius.circular(8.0);
 
     return Container(
-      // margin:
-      //     margin ?? const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0),
+      margin: inset
+          ? const EdgeInsets.symmetric(vertical: 8.0, horizontal: 12.0)
+          : EdgeInsets.zero,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -42,7 +43,12 @@ class VanCellGroup extends StatelessWidget {
                 borderRadius: borderRadius,
               ),
               child: Column(
-                children: children,
+                children: List.generate(children.length, (index) {
+                  final isLast = index == children.length - 1;
+                  final cell = children[index];
+                  // 动态覆盖 border 属性
+                  return cell;
+                }),
               ),
             ),
           ),
