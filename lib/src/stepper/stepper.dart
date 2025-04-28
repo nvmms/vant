@@ -26,6 +26,7 @@ class VanStepper<T extends num> extends StatefulWidget {
   final VoidCallback? onPlus;
   final VoidCallback? onFocus;
   final VoidCallback? onBlur;
+  final Color bgColor;
 
   const VanStepper({
     super.key,
@@ -51,6 +52,7 @@ class VanStepper<T extends num> extends StatefulWidget {
     this.onPlus,
     this.onFocus,
     this.onBlur,
+    this.bgColor = const Color(0xfff7f7f8),
   });
 
   @override
@@ -72,6 +74,10 @@ class _VanStepperState<T extends num> extends State<VanStepper<T>> {
 
   T get step {
     return widget.step ?? 1 as T;
+  }
+
+  double get height {
+    return widget.buttonSize ?? 40;
   }
 
   @override
@@ -144,8 +150,11 @@ class _VanStepperState<T extends num> extends State<VanStepper<T>> {
         // 减少按钮
         if (widget.showMinus)
           Material(
-            color: const Color(0xfff2f3f5),
-            borderRadius: BorderRadius.circular(4),
+            color: widget.bgColor,
+            borderRadius: BorderRadius.only(
+              topLeft: radius,
+              bottomLeft: radius,
+            ),
             child: InkWell(
               onTap: _decreaseValue,
               onTapDown: (_) {
@@ -159,8 +168,8 @@ class _VanStepperState<T extends num> extends State<VanStepper<T>> {
               onTapCancel: _stopLongPress,
               onTapUp: (_) => _stopLongPress(),
               child: SizedBox(
-                width: widget.buttonSize ?? 40,
-                height: widget.buttonSize ?? 40,
+                width: height,
+                height: height,
                 child: const Icon(Icons.remove, color: Color(0xff323232)),
               ),
             ),
@@ -169,33 +178,42 @@ class _VanStepperState<T extends num> extends State<VanStepper<T>> {
         // 输入框
         if (widget.showInput)
           Container(
-            height: 40,
+            height: height,
             width: widget.inputWidth ?? 60,
-            color: const Color(0xfff2f3f5),
-            child: TextField(
-              textAlign: TextAlign.center, // 水平居中
-              controller: TextEditingController(text: currentValue.toString()),
-              keyboardType: const TextInputType.numberWithOptions(
-                decimal: true,
+            color: widget.bgColor,
+            child: Center(
+              child: TextField(
+                textAlign: TextAlign.center, // 水平居中
+                controller:
+                    TextEditingController(text: currentValue.toString()),
+                keyboardType: const TextInputType.numberWithOptions(
+                  decimal: true,
+                ),
+                decoration: InputDecoration(
+                  hintText: widget.placeholder ?? '输入',
+                  enabled: !widget.disabled && !widget.disableInput,
+                  isCollapsed: true,
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.symmetric(
+                    vertical: 0,
+                    horizontal: 0,
+                  ),
+                ),
+                onChanged: _onInputChange,
+                onTap: widget.onFocus,
+                onEditingComplete: widget.onBlur,
               ),
-              decoration: InputDecoration(
-                hintText: widget.placeholder ?? '输入',
-                enabled: !widget.disabled && !widget.disableInput,
-                isCollapsed: true,
-                border: InputBorder.none,
-                contentPadding: const EdgeInsets.all(12),
-              ),
-              onChanged: _onInputChange,
-              onTap: widget.onFocus,
-              onEditingComplete: widget.onBlur,
             ),
           ),
 
         // 增加按钮
         if (widget.showPlus)
           Material(
-            color: const Color(0xfff2f3f5),
-            borderRadius: BorderRadius.circular(4),
+            color: widget.bgColor,
+            borderRadius: BorderRadius.only(
+              topRight: radius,
+              bottomRight: radius,
+            ),
             child: InkWell(
               onTap: _increaseValue,
               onTapDown: (_) {
@@ -209,8 +227,8 @@ class _VanStepperState<T extends num> extends State<VanStepper<T>> {
               onTapCancel: _stopLongPress,
               onTapUp: (_) => _stopLongPress(),
               child: SizedBox(
-                width: widget.buttonSize ?? 40,
-                height: widget.buttonSize ?? 40,
+                width: height,
+                height: height,
                 child: const Icon(Icons.add, color: Color(0xff323232)),
               ),
             ),
