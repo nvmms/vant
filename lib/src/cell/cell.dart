@@ -113,11 +113,15 @@ class VanCell extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         if (titleWidget != null)
-                          titleWidget!
+                          Expanded(child: titleWidget!)
                         else if (title != null)
-                          Text(
-                            title!,
-                            style: textTheme.bodyLarge,
+                          Expanded(
+                            child: Text(
+                              title!,
+                              style: textTheme.bodyLarge,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
                           ),
                         if (required)
                           const Padding(
