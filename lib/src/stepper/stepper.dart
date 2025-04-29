@@ -1,13 +1,23 @@
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:vant/vant.dart';
-import 'dart:async'; // 添加此行以使用 Timer
+import 'dart:async';
 
-class VanStepper<T extends num> extends StatefulWidget {
-  final T? min;
-  final T? max;
+class VanStepper extends StatefulWidget {
+  final double? doubleMin;
+  final int? intMin;
+
+  final double? doubleMax;
+  final int? intMax;
+
   final bool autoFixed;
-  final T? defaultValue;
-  final T? step;
+
+  final double? doubleDefaultValue;
+  final int? intDefaultValue;
+
+  final double? doubleStep;
+  final int? intStep;
+
   final double? inputWidth;
   final double? buttonSize;
   final String? placeholder;
@@ -21,20 +31,22 @@ class VanStepper<T extends num> extends StatefulWidget {
   final bool longPress;
   final bool allowEmpty;
 
-  final ValueChanged<T>? onChanged;
+  final ValueChanged<double>? onDoubleChanged;
+  final ValueChanged<int>? onIntChanged;
+
   final VoidCallback? onMinus;
   final VoidCallback? onPlus;
   final VoidCallback? onFocus;
   final VoidCallback? onBlur;
   final Color bgColor;
 
-  const VanStepper({
+  const VanStepper.int({
     super.key,
-    this.min,
-    this.max,
+    int min = 1,
+    int? max,
     this.autoFixed = false,
-    this.defaultValue,
-    this.step,
+    int defaultValue = 1,
+    int step = 1,
     this.inputWidth,
     this.buttonSize,
     this.placeholder,
@@ -47,105 +59,240 @@ class VanStepper<T extends num> extends StatefulWidget {
     this.showInput = true,
     this.longPress = true,
     this.allowEmpty = false,
-    this.onChanged,
     this.onMinus,
     this.onPlus,
     this.onFocus,
     this.onBlur,
     this.bgColor = const Color(0xfff7f7f8),
-  });
+    ValueChanged<int>? onChanged,
+  })  : intMin = min,
+        intMax = max,
+        intDefaultValue = defaultValue,
+        intStep = step,
+        onIntChanged = onChanged,
+        doubleMin = null,
+        doubleMax = null,
+        doubleDefaultValue = null,
+        doubleStep = null,
+        onDoubleChanged = null;
+
+  const VanStepper.double({
+    super.key,
+    double min = 1.0,
+    double? max,
+    this.autoFixed = false,
+    double defaultValue = 1.0,
+    double step = 1.0,
+    this.inputWidth,
+    this.buttonSize,
+    this.placeholder,
+    this.disabled = false,
+    this.disablePlus = false,
+    this.disableMinus = false,
+    this.disableInput = false,
+    this.showPlus = true,
+    this.showMinus = true,
+    this.showInput = true,
+    this.longPress = true,
+    this.allowEmpty = false,
+    this.onMinus,
+    this.onPlus,
+    this.onFocus,
+    this.onBlur,
+    this.bgColor = const Color(0xfff7f7f8),
+    ValueChanged<double>? onChanged,
+  })  : intMin = null,
+        intMax = null,
+        intDefaultValue = null,
+        intStep = null,
+        onIntChanged = null,
+        doubleMin = min,
+        doubleMax = max,
+        doubleDefaultValue = defaultValue,
+        doubleStep = step,
+        onDoubleChanged = onChanged;
 
   @override
   State createState() => _VanStepperState();
 }
 
-class _VanStepperState<T extends num> extends State<VanStepper<T>> {
-  late T currentValue;
+class _VanStepperState extends State<VanStepper> {
+  double? doubleCurrentValue;
+  int? intCurrentValue;
+  double normalHeight = 40;
+
   Radius radius = const Radius.circular(6);
-  Timer? _longPressTimer; // 用于处理长按的计时器
 
-  T get min {
-    return widget.min ?? 1 as T; // 如果未传递min值，则默认使用1
+  // Timer? _longPressTimer; // 用于处理长按的计时器
+
+  String get currentValue {
+    if (widget.onIntChanged != null) {
+      return intCurrentValue.toString();
+    } else if (widget.onDoubleChanged != null) {
+      return doubleCurrentValue!.toStringAsFixed(decimalPlaces);
+    } else {
+      throw UnimplementedError('onChanged is not implemented');
+    }
   }
 
-  T? get max {
-    return widget.max; // 如果未传递max值，则返回null，表示不限制最大值
+  double get iconSize {
+    return (height / normalHeight) * 30;
   }
 
-  T get step {
-    return widget.step ?? 1 as T;
+  double get fontSize {
+    return (height / normalHeight) * 20;
   }
 
   double get height {
-    return widget.buttonSize ?? 40;
+    return widget.buttonSize ?? normalHeight;
+  }
+
+  int get decimalPlaces {
+    if (widget.onDoubleChanged != null) {
+      int stepDecimalPlaces = 2;
+      int valueDecimalPlaces = 2;
+
+      String str = doubleCurrentValue.toString();
+      int decimalPointIndex = str.indexOf('.');
+      if (decimalPointIndex > -1) {
+        valueDecimalPlaces = str.length - decimalPointIndex - 1;
+      }
+
+      String str1 = widget.doubleStep.toString();
+      int stepDecimalPointIndex = str1.indexOf('.');
+      if (decimalPointIndex > -1) {
+        stepDecimalPlaces = str1.length - stepDecimalPointIndex - 1;
+      }
+
+      return (stepDecimalPlaces > valueDecimalPlaces)
+          ? stepDecimalPlaces
+          : valueDecimalPlaces;
+    } else {
+      return 2;
+    }
   }
 
   @override
   void initState() {
     super.initState();
-    currentValue = widget.defaultValue ?? 1 as T;
+    if (widget.onIntChanged != null) {
+      intCurrentValue = widget.intDefaultValue ?? widget.intMin;
+    } else if (widget.onDoubleChanged != null) {
+      doubleCurrentValue = widget.doubleDefaultValue ?? widget.doubleMin;
+    } else {
+      throw UnimplementedError('onChanged is not implemented');
+    }
+  }
+
+  double add(double x1, double x2) {
+    return (Decimal.parse(x1.toString()) + Decimal.parse(x2.toString()))
+        .toDouble();
+  }
+
+  double subtract(double x1, double x2) {
+    return (Decimal.parse(x1.toString()) - Decimal.parse(x2.toString()))
+        .toDouble();
   }
 
   void _increaseValue() {
     if (widget.disabled || widget.disablePlus) return;
 
-    final num newValue = (currentValue as num) + (step as num);
-    if (max == null || newValue <= max!) {
-      setState(() {
-        currentValue = newValue as T;
-      });
-      widget.onPlus?.call();
-      widget.onChanged?.call(currentValue);
+    if (widget.onDoubleChanged != null) {
+      double newValue = add(doubleCurrentValue!, widget.doubleStep!);
+      if (widget.doubleMax == null || newValue <= widget.doubleMax!) {
+        setState(() {
+          doubleCurrentValue = newValue;
+        });
+        widget.onDoubleChanged?.call(doubleCurrentValue!);
+        widget.onMinus?.call();
+      }
+    } else if (widget.onIntChanged != null) {
+      int newValue = intCurrentValue! + widget.intStep!;
+      if (widget.intMax == null || newValue <= widget.intMax!) {
+        setState(() {
+          intCurrentValue = newValue;
+        });
+        widget.onIntChanged?.call(intCurrentValue!);
+        widget.onMinus?.call();
+      }
+    } else {
+      throw UnimplementedError('onChanged is not implemented');
     }
   }
 
   void _decreaseValue() {
     if (widget.disabled || widget.disableMinus) return;
 
-    final num newValue = (currentValue as num) - (step as num);
-    if (newValue >= min) {
-      setState(() {
-        currentValue = newValue as T;
-      });
-      widget.onMinus?.call();
-      widget.onChanged?.call(currentValue);
+    if (widget.onDoubleChanged != null) {
+      double newValue = subtract(doubleCurrentValue!, widget.doubleStep!);
+
+      if (widget.doubleMin == null || newValue >= widget.doubleMin!) {
+        setState(() {
+          doubleCurrentValue = newValue;
+        });
+        widget.onDoubleChanged?.call(doubleCurrentValue!);
+        widget.onMinus?.call();
+      }
+    } else if (widget.onIntChanged != null) {
+      int newValue = intCurrentValue! - widget.intStep!;
+      if (widget.intMin == null || newValue >= widget.intMin!) {
+        setState(() {
+          intCurrentValue = newValue;
+        });
+        widget.onIntChanged?.call(intCurrentValue!);
+        widget.onMinus?.call();
+      }
+    } else {
+      throw UnimplementedError('onChanged is not implemented');
     }
   }
 
   void _onInputChange(String value) {
     if (widget.disabled || widget.disableInput) return;
 
-    final parsedValue = num.tryParse(value);
-    if (parsedValue != null &&
-        parsedValue >= min &&
-        (max == null || parsedValue <= max!)) {
-      setState(() {
-        currentValue = parsedValue as T;
-      });
-      widget.onChanged?.call(currentValue);
+    if (intCurrentValue != null) {
+      int parsedValue = int.tryParse(value) ?? 0;
+      if (parsedValue >= widget.intMin! &&
+          (widget.intMax == null || parsedValue <= widget.intMax!)) {
+        setState(() {
+          intCurrentValue = parsedValue;
+        });
+        widget.onIntChanged?.call(intCurrentValue!);
+      }
+    } else if (doubleCurrentValue != null) {
+      double parsedValue = double.tryParse(value) ?? 0.0;
+      if (parsedValue >= widget.doubleMin! &&
+          (widget.doubleMax == null || parsedValue <= widget.doubleMax!)) {
+        setState(() {
+          doubleCurrentValue = parsedValue;
+        });
+        widget.onDoubleChanged?.call(doubleCurrentValue!);
+      }
+    } else {
+      throw UnimplementedError('onChanged is not implemented');
     }
   }
 
   void _startLongPress(bool isIncrease) {
-    _longPressTimer?.cancel(); // 确保之前的计时器被取消
-    _longPressTimer = Timer.periodic(const Duration(milliseconds: 200), (_) {
-      if (isIncrease) {
-        _increaseValue();
-      } else {
-        _decreaseValue();
-      }
-    });
+    // _longPressTimer?.cancel(); // 确保之前的计时器被取消
+    // _longPressTimer = Timer.periodic(const Duration(milliseconds: 200), (_) {
+    //   if (isIncrease) {
+    //     _increaseValue();
+    //   } else {
+    //     _decreaseValue();
+    //   }
+    // });
   }
 
   void _stopLongPress() {
-    _longPressTimer?.cancel();
-    _longPressTimer = null;
+    // _longPressTimer?.cancel();
+    // _longPressTimer = null;
   }
 
   @override
   Widget build(BuildContext context) {
     return VantSpace(
-      spacing: 4,
+      spacing: 2,
       children: [
         // 减少按钮
         if (widget.showMinus)
@@ -170,7 +317,11 @@ class _VanStepperState<T extends num> extends State<VanStepper<T>> {
               child: SizedBox(
                 width: height,
                 height: height,
-                child: const Icon(Icons.remove, color: Color(0xff323232)),
+                child: Icon(
+                  Icons.remove,
+                  size: iconSize,
+                  color: Color(0xff323232),
+                ),
               ),
             ),
           ),
@@ -184,10 +335,14 @@ class _VanStepperState<T extends num> extends State<VanStepper<T>> {
             child: Center(
               child: TextField(
                 textAlign: TextAlign.center, // 水平居中
-                controller:
-                    TextEditingController(text: currentValue.toString()),
+                controller: TextEditingController(
+                  text: currentValue.toString(),
+                ),
                 keyboardType: const TextInputType.numberWithOptions(
                   decimal: true,
+                ),
+                style: TextStyle(
+                  fontSize: fontSize,
                 ),
                 decoration: InputDecoration(
                   hintText: widget.placeholder ?? '输入',
@@ -229,7 +384,11 @@ class _VanStepperState<T extends num> extends State<VanStepper<T>> {
               child: SizedBox(
                 width: height,
                 height: height,
-                child: const Icon(Icons.add, color: Color(0xff323232)),
+                child: Icon(
+                  Icons.add,
+                  size: iconSize,
+                  color: Color(0xff323232),
+                ),
               ),
             ),
           ),
@@ -239,7 +398,7 @@ class _VanStepperState<T extends num> extends State<VanStepper<T>> {
 
   @override
   void dispose() {
-    _longPressTimer?.cancel(); // 确保计时器在组件销毁时被取消
+    // _longPressTimer?.cancel(); // 确保计时器在组件销毁时被取消
     super.dispose();
   }
 }

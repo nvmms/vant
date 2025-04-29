@@ -8,7 +8,13 @@ class VanStepperExample extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: const VanStepper(),
+      body: VanStepper.double(
+        step: 0.01,
+        buttonSize: 22,
+        onChanged: (value) {
+          // print(value);
+        },
+      ),
     );
   }
 }
