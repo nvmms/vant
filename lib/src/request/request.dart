@@ -187,9 +187,9 @@ class _VantRequestState<T> extends State<VantRequest<T>> {
                     bottom: SizedBox(
                       width: 100,
                       height: 40,
-                      child: VantButton(
+                      child: VanButton(
                         text: "重试",
-                        type: VantButtonType.primary,
+                        type: VanType.primary,
                         onPressed: () {
                           widget.provider.refresh();
                         },
@@ -204,9 +204,9 @@ class _VantRequestState<T> extends State<VantRequest<T>> {
                     bottom: SizedBox(
                       width: 100,
                       height: 40,
-                      child: VantButton(
+                      child: VanButton(
                         text: "重试",
-                        type: VantButtonType.primary,
+                        type: VanType.primary,
                         onPressed: () {
                           widget.provider.refresh();
                         },

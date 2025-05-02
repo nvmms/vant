@@ -1,24 +1,16 @@
 import 'package:flutter/material.dart';
-
-/// Button类型
-enum VantButtonType {
-  primary,
-  success,
-  warning,
-  danger,
-  normal,
-}
+import 'package:vant/vant.dart';
 
 /// Button尺寸
-enum VantButtonSize {
+enum VanButtonSize {
   large,
   normal,
   small,
   mini,
 }
 
-/// Vant风格的Button组件
-class VantButton extends StatelessWidget {
+/// Van风格的Button组件
+class VanButton extends StatelessWidget {
   /// 按钮文字
   final String? text;
 
@@ -26,10 +18,10 @@ class VantButton extends StatelessWidget {
   final Widget? child;
 
   /// 按钮类型
-  final VantButtonType type;
+  final VanType type;
 
   /// 按钮尺寸
-  final VantButtonSize size;
+  final VanButtonSize size;
 
   /// 是否禁用按钮
   final bool disabled;
@@ -61,12 +53,14 @@ class VantButton extends StatelessWidget {
   /// 按钮内边距
   final EdgeInsetsGeometry? padding;
 
-  const VantButton({
+  final BorderRadius? borderRadius;
+
+  const VanButton({
     super.key,
     this.text,
     this.child,
-    this.type = VantButtonType.normal,
-    this.size = VantButtonSize.normal,
+    this.type = VanType.normal,
+    this.size = VanButtonSize.normal,
     this.disabled = false,
     this.block = false,
     this.plain = false,
@@ -77,6 +71,7 @@ class VantButton extends StatelessWidget {
     this.onPressed,
     this.color,
     this.padding,
+    this.borderRadius,
   });
 
   @override
@@ -123,15 +118,15 @@ class VantButton extends StatelessWidget {
   // 获取按钮颜色
   List<Color> _getButtonColors() {
     switch (type) {
-      case VantButtonType.primary:
+      case VanType.primary:
         return [Colors.blue, Colors.white];
-      case VantButtonType.success:
+      case VanType.success:
         return [Colors.green, Colors.white];
-      case VantButtonType.warning:
+      case VanType.warning:
         return [Colors.orange, Colors.white];
-      case VantButtonType.danger:
+      case VanType.danger:
         return [Colors.red, Colors.white];
-      case VantButtonType.normal:
+      case VanType.normal:
       default:
         return [Colors.white, Colors.black87];
     }
@@ -140,13 +135,13 @@ class VantButton extends StatelessWidget {
   // 获取按钮高度
   double _getHeightBySize() {
     switch (size) {
-      case VantButtonSize.large:
+      case VanButtonSize.large:
         return 50.0;
-      case VantButtonSize.normal:
+      case VanButtonSize.normal:
         return 44.0;
-      case VantButtonSize.small:
+      case VanButtonSize.small:
         return 32.0;
-      case VantButtonSize.mini:
+      case VanButtonSize.mini:
         return 24.0;
     }
   }
@@ -154,13 +149,13 @@ class VantButton extends StatelessWidget {
   // 获取字体大小
   double _getFontSizeBySize() {
     switch (size) {
-      case VantButtonSize.large:
+      case VanButtonSize.large:
         return 16.0;
-      case VantButtonSize.normal:
+      case VanButtonSize.normal:
         return 14.0;
-      case VantButtonSize.small:
+      case VanButtonSize.small:
         return 12.0;
-      case VantButtonSize.mini:
+      case VanButtonSize.mini:
         return 10.0;
     }
   }
@@ -168,19 +163,22 @@ class VantButton extends StatelessWidget {
   // 获取按钮内边距
   EdgeInsetsGeometry _getPaddingBySize() {
     switch (size) {
-      case VantButtonSize.large:
+      case VanButtonSize.large:
         return const EdgeInsets.symmetric(horizontal: 16);
-      case VantButtonSize.normal:
+      case VanButtonSize.normal:
         return const EdgeInsets.symmetric(horizontal: 14);
-      case VantButtonSize.small:
+      case VanButtonSize.small:
         return const EdgeInsets.symmetric(horizontal: 8);
-      case VantButtonSize.mini:
+      case VanButtonSize.mini:
         return const EdgeInsets.symmetric(horizontal: 4);
     }
   }
 
   // 获取边框圆角
   BorderRadius _getBorderRadius() {
+    if (borderRadius != null) {
+      return borderRadius!;
+    }
     if (square) {
       return BorderRadius.zero;
     }
@@ -234,6 +232,43 @@ class VantButton extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: children,
+    );
+  }
+
+  /// 创建一个新的 VanButton 实例，基于当前实例的属性，并允许覆盖部分属性
+  VanButton copyWith({
+    String? text,
+    Widget? child,
+    VanType? type,
+    VanButtonSize? size,
+    bool? disabled,
+    bool? block,
+    bool? plain,
+    bool? round,
+    bool? square,
+    bool? loading,
+    Widget? icon,
+    VoidCallback? onPressed,
+    Color? color,
+    EdgeInsetsGeometry? padding,
+    BorderRadius? borderRadius,
+  }) {
+    return VanButton(
+      text: text ?? this.text,
+      type: type ?? this.type,
+      size: size ?? this.size,
+      disabled: disabled ?? this.disabled,
+      block: block ?? this.block,
+      plain: plain ?? this.plain,
+      round: round ?? this.round,
+      square: square ?? this.square,
+      loading: loading ?? this.loading,
+      icon: icon ?? this.icon,
+      onPressed: onPressed ?? this.onPressed,
+      color: color ?? this.color,
+      padding: padding ?? this.padding,
+      borderRadius: borderRadius ?? this.borderRadius,
+      child: child ?? this.child,
     );
   }
 }
