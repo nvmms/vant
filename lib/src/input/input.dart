@@ -22,6 +22,7 @@ class VanInput extends StatefulWidget {
     this.focus,
     this.input,
     this.keyboardType,
+    this.textInputAction,
   });
 
   final bool showWordLimit;
@@ -38,6 +39,7 @@ class VanInput extends StatefulWidget {
   final Widget? suffix;
   final TextEditingController? controller;
   final TextInputType? keyboardType;
+  final TextInputAction? textInputAction;
 
   final VoidCallback? blur;
   final VoidCallback? focus;
@@ -77,7 +79,7 @@ class _VanInputState extends State<VanInput> {
   Widget build(BuildContext context) {
     return TextField(
       keyboardType: widget.keyboardType,
-      textInputAction: TextInputAction.done,
+      textInputAction: widget.textInputAction,
       controller: widget.controller,
       enabled: !widget.disabled,
       readOnly: widget.readonly,
