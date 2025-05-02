@@ -23,6 +23,7 @@ class VanInput extends StatefulWidget {
     this.input,
     this.keyboardType,
     this.textInputAction,
+    this.onSubmitted,
   });
 
   final bool showWordLimit;
@@ -46,6 +47,7 @@ class VanInput extends StatefulWidget {
   final ValueChanged<String>? change;
   final ValueChanged<String>? input;
   final VoidCallback? clear;
+  final ValueChanged<String>? onSubmitted;
 
   @override
   State<StatefulWidget> createState() => _VanInputState();
@@ -130,9 +132,7 @@ class _VanInputState extends State<VanInput> {
         contentPadding: const EdgeInsets.only(left: 10),
         isDense: false,
       ),
-      onSubmitted: (value) {
-        // 执行搜索操作
-      },
+      onSubmitted: widget.onSubmitted,
     );
   }
 }
