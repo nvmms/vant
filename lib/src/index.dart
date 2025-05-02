@@ -11,3 +11,4 @@ export 'action-bar/index.dart';
 export 'cell/index.dart';
 export 'stepper/index.dart';
 export 'action-sheet/index.dart';
+export 'input/index.dart';
