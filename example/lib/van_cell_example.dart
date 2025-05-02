@@ -34,6 +34,9 @@ class VanCellExample extends StatelessWidget {
             title: "分组标题",
             selectable: true,
             multiple: true,
+            defaultSelectedKeys: [
+              Key("微信"),
+            ],
             children: const [
               VanCell(key: Key("微信"), title: "分组内单元格1"),
               VanCell(key: Key("支付宝"), title: "分组内单元格2"),

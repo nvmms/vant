@@ -8,6 +8,7 @@ class VanCellGroup extends StatefulWidget {
   final bool selectable;
   final bool multiple;
   final ValueChanged<List<Key?>>? onChange;
+  final List<Key?>? defaultSelectedKeys;
 
   const VanCellGroup({
     super.key,
@@ -17,6 +18,7 @@ class VanCellGroup extends StatefulWidget {
     this.selectable = false,
     this.multiple = false,
     this.onChange,
+    this.defaultSelectedKeys,
   });
 
   @override
@@ -25,6 +27,14 @@ class VanCellGroup extends StatefulWidget {
 
 class _VanCellGroupState extends State<VanCellGroup> {
   List<Key?> selectedKeys = [];
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.defaultSelectedKeys != null) {
+      selectedKeys = widget.defaultSelectedKeys!;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
