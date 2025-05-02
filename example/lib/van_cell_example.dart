@@ -10,27 +10,39 @@ class VanCellExample extends StatelessWidget {
       appBar: AppBar(
         title: const Text("VantActionBar"),
       ),
-      body: VanCellGroup(
-        title: "asfasdf",
-        inset: true,
+      body: ListView(
         children: [
           VanCell(
-            titleWidget: Text("data11111"),
-            labelWidget: Text("data11111"),
-            valueWidget: Text("data11111"),
-            title: "AAA",
-            icon: Icons.abc,
-            center: true,
+            title: "标题",
+            value: "内容",
+            label: "标签",
+            size: 16,
+            icon: Icons.access_alarm,
+            url: "https://example.com",
+            border: true,
+            replace: false,
+            clickable: true,
+            isLink: true,
+            required: false,
+            center: false,
+            arrowDirection: VanCellArrowDirection.right,
             onTap: () {
-              print("object");
+              print("Cell tapped");
             },
           ),
-          VanCell(
-            titleWidget: Text("data11111"),
+          VanCellGroup(
+            title: "分组标题",
+            selectable: true,
+            multiple: true,
+            children: const [
+              VanCell(key: Key("微信"), title: "分组内单元格1"),
+              VanCell(key: Key("支付宝"), title: "分组内单元格2"),
+              VanCell(key: Key("楹联"), title: "分组内单元格3"),
+            ],
+            onChange: (selectedKeys) {
+              debugPrint("Selected keys: $selectedKeys");
+            },
           ),
-          VanCell(title: "title", label: "哇哈哈", value: "123"),
-          VanCell(title: "title", value: "123"),
-          VanCell(title: "title", value: "123"),
         ],
       ),
     );
