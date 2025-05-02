@@ -129,6 +129,7 @@ class VanButtonExample extends StatelessWidget {
             radius: 32,
             children: [
               VanButton(
+                width: 120,
                 text: '按钮1',
                 type: VanType.primary,
                 onPressed: () {},
@@ -139,6 +140,7 @@ class VanButtonExample extends StatelessWidget {
                 onPressed: () {},
               ),
               VanButton(
+                width: 80,
                 text: '按钮312341234',
                 type: VanType.warning,
                 onPressed: () {},

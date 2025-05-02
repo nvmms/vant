@@ -55,6 +55,8 @@ class VanButton extends StatelessWidget {
 
   final BorderRadius? borderRadius;
 
+  final double? width;
+
   const VanButton({
     super.key,
     this.text,
@@ -72,6 +74,7 @@ class VanButton extends StatelessWidget {
     this.color,
     this.padding,
     this.borderRadius,
+    this.width,
   });
 
   @override
@@ -91,7 +94,7 @@ class VanButton extends StatelessWidget {
 
     // 构建按钮组件
     return SizedBox(
-      width: block ? double.infinity : null,
+      width: block ? double.infinity : width,
       height: height,
       child: Material(
         color: disabled ? Colors.grey.shade300 : color ?? backgroundColor,
@@ -185,7 +188,7 @@ class VanButton extends StatelessWidget {
     if (round) {
       return BorderRadius.circular(999);
     }
-    return BorderRadius.circular(2);
+    return BorderRadius.circular(6);
   }
 
   // 构建按钮内容
@@ -217,12 +220,18 @@ class VanButton extends StatelessWidget {
       children.add(child!);
     } else if (text != null) {
       children.add(
-        Text(
-          text!,
-          style: TextStyle(
-            color: disabled ? Colors.grey : textColor,
-            fontSize: fontSize,
-            fontWeight: FontWeight.w500,
+        Flexible(
+          // 确保文本可以正确换行或截断
+          child: Text(
+            text!,
+            maxLines: 1, // 限制为单行
+            overflow: TextOverflow.ellipsis, // 超出部分显示省略号
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: disabled ? Colors.grey : textColor,
+              fontSize: fontSize,
+              fontWeight: FontWeight.w500,
+            ),
           ),
         ),
       );
@@ -252,6 +261,7 @@ class VanButton extends StatelessWidget {
     Color? color,
     EdgeInsetsGeometry? padding,
     BorderRadius? borderRadius,
+    double? width,
   }) {
     return VanButton(
       text: text ?? this.text,
@@ -268,6 +278,7 @@ class VanButton extends StatelessWidget {
       color: color ?? this.color,
       padding: padding ?? this.padding,
       borderRadius: borderRadius ?? this.borderRadius,
+      width: width ?? this.width,
       child: child ?? this.child,
     );
   }
