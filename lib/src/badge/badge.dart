@@ -122,7 +122,7 @@ class VanBadge extends StatelessWidget {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        child,
+        Center(child: child),
         Positioned(
           top: top,
           left: left,
