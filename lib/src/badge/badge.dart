@@ -86,18 +86,7 @@ class VanBadge extends StatelessWidget {
   }
 
   Widget get childContainer {
-    if (text.isEmpty) {
-      return Container(
-        width: VanBadgeDotSize,
-        height: VanBadgeDotSize,
-        decoration: BoxDecoration(
-          color: color,
-          borderRadius: const BorderRadius.all(
-            Radius.circular(VanBadgeDotSize),
-          ),
-        ),
-      );
-    } else {
+    if (text.isNotEmpty) {
       return Container(
         padding: VanBadgePadding,
         decoration: BoxDecoration(
@@ -114,6 +103,19 @@ class VanBadge extends StatelessWidget {
           ),
         ),
       );
+    } else if (dot == true) {
+      return Container(
+        width: VanBadgeDotSize,
+        height: VanBadgeDotSize,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: const BorderRadius.all(
+            Radius.circular(VanBadgeDotSize),
+          ),
+        ),
+      );
+    } else {
+      return const SizedBox.shrink();
     }
   }
 
