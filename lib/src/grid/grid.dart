@@ -1,3 +1,5 @@
+import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
+
 import 'package:flutter/material.dart';
 import 'package:vant/src/grid/config.dart';
 import 'package:vant/vant.dart';
@@ -13,6 +15,7 @@ class VanGrid extends StatelessWidget {
   final String direction;
   final bool reverse;
   final List<VanGridItem> children;
+  final ValueChanged<int>? onItemClick;
 
   const VanGrid({
     super.key,
@@ -26,6 +29,7 @@ class VanGrid extends StatelessWidget {
     this.direction = 'vertical',
     this.reverse = false,
     required this.children,
+    this.onItemClick,
   });
 
   TextStyle get style => const TextStyle(
@@ -68,12 +72,12 @@ class VanGrid extends StatelessWidget {
         runSpacing: gutter,
         children: List.generate(children.length, (index) {
           VanGridItem item = children[index];
-          return Container(
+          var child = Container(
             width: width,
             height: square ? width : null,
             padding: VanGridItemContentPadding,
             decoration: BoxDecoration(
-              color: VanGridItemContentBackground,
+              // color: VanGridItemContentBackground,
               border: Border(
                 left: isFirstColumn(index) ? borderSide : BorderSide.none,
                 top: isFirstRow(index) ? borderSide : BorderSide.none,
@@ -87,6 +91,17 @@ class VanGrid extends StatelessWidget {
               mainAxisAlignment:
                   center ? MainAxisAlignment.center : MainAxisAlignment.start,
               children: buildChild(item),
+            ),
+          );
+          return Material(
+            color: VanGridItemContentBackground, // 保持透明或你想要的背景色
+            child: InkWell(
+              onTap: clickable
+                  ? () {
+                      onItemClick?.call(index);
+                    }
+                  : null,
+              child: child,
             ),
           );
         }),

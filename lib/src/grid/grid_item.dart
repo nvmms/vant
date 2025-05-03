@@ -7,9 +7,6 @@ class VanGridItem {
   final Color? iconColor;
   final bool dot;
   final dynamic badge;
-  final String? url;
-  final String? to;
-  final bool replace;
 
   const VanGridItem({
     this.text,
@@ -18,8 +15,5 @@ class VanGridItem {
     this.iconColor,
     this.dot = false,
     this.badge,
-    this.url,
-    this.to,
-    this.replace = false,
   }) : assert(child != null || icon != null || text != null);
 }
