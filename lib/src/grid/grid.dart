@@ -9,7 +9,7 @@ class VanGrid extends StatelessWidget {
   final bool border;
   final bool center;
   final bool square;
-  final bool clickable;
+  // final bool clickable;
   final String direction;
   final bool reverse;
   final List<VanGridItem> children;
@@ -23,7 +23,7 @@ class VanGrid extends StatelessWidget {
     this.border = true,
     this.center = true,
     this.square = false,
-    this.clickable = false,
+    // this.clickable = false,
     this.direction = 'vertical',
     this.reverse = false,
     required this.children,
@@ -98,7 +98,7 @@ class VanGrid extends StatelessWidget {
           return Material(
             color: VanGridItemContentBackground, // 保持透明或你想要的背景色
             child: InkWell(
-              onTap: clickable
+              onTap: onItemClick != null
                   ? () {
                       onItemClick?.call(index);
                     }
