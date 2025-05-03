@@ -1,5 +1,3 @@
-import 'dart:nativewrappers/_internal/vm/lib/ffi_allocation_patch.dart';
-
 import 'package:flutter/material.dart';
 import 'package:vant/src/grid/config.dart';
 import 'package:vant/vant.dart';
