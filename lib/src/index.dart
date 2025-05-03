@@ -12,3 +12,4 @@ export 'cell/index.dart';
 export 'stepper/index.dart';
 export 'action-sheet/index.dart';
 export 'input/index.dart';
+export 'grid/index.dart';
