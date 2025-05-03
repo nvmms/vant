@@ -60,36 +60,37 @@ class VanGrid extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width =
-        MediaQuery.of(context).size.width - (gutter * (columnNum - 1));
-    width = width / columnNum;
-    return Wrap(
-      spacing: gutter,
-      runSpacing: gutter,
-      children: List.generate(children.length, (index) {
-        VanGridItem item = children[index];
-        return Container(
-          width: width,
-          height: square ? width : null,
-          padding: VanGridItemContentPadding,
-          decoration: BoxDecoration(
-            color: VanGridItemContentBackground,
-            border: Border(
-              left: isFirstColumn(index) ? borderSide : BorderSide.none,
-              top: isFirstRow(index) ? borderSide : BorderSide.none,
-              right: borderSide,
-              bottom: borderSide,
+    return LayoutBuilder(builder: (context, constraints) {
+      double width = constraints.maxWidth - (gutter * (columnNum - 1));
+      width = width / columnNum;
+      return Wrap(
+        spacing: gutter,
+        runSpacing: gutter,
+        children: List.generate(children.length, (index) {
+          VanGridItem item = children[index];
+          return Container(
+            width: width,
+            height: square ? width : null,
+            padding: VanGridItemContentPadding,
+            decoration: BoxDecoration(
+              color: VanGridItemContentBackground,
+              border: Border(
+                left: isFirstColumn(index) ? borderSide : BorderSide.none,
+                top: isFirstRow(index) ? borderSide : BorderSide.none,
+                right: borderSide,
+                bottom: borderSide,
+              ),
             ),
-          ),
-          child: VantSpace(
-            spacing: 8,
-            direction: Axis.vertical,
-            mainAxisAlignment:
-                center ? MainAxisAlignment.center : MainAxisAlignment.start,
-            children: buildChild(item),
-          ),
-        );
-      }),
-    );
+            child: VantSpace(
+              spacing: 8,
+              direction: Axis.vertical,
+              mainAxisAlignment:
+                  center ? MainAxisAlignment.center : MainAxisAlignment.start,
+              children: buildChild(item),
+            ),
+          );
+        }),
+      );
+    });
   }
 }

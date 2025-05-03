@@ -10,24 +10,27 @@ class VanGridExample extends StatelessWidget {
         child: VantSpace(
           direction: Axis.vertical,
           children: [
-            VanGrid(
-              square: true,
-              // border: false,
-              children: [
-                VanGridItem(
-                  icon: Icons.apple,
-                  text: "A",
-                ),
-                VanGridItem(
-                  text: "A",
-                ),
-                VanGridItem(
-                  text: "C",
-                ),
-                VanGridItem(
-                  text: "D",
-                ),
-              ],
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: VanGrid(
+                square: true,
+                // border: false,
+                children: [
+                  VanGridItem(
+                    icon: Icons.apple,
+                    text: "A",
+                  ),
+                  VanGridItem(
+                    text: "A",
+                  ),
+                  VanGridItem(
+                    text: "C",
+                  ),
+                  VanGridItem(
+                    text: "D",
+                  ),
+                ],
+              ),
             ),
           ],
         ),
