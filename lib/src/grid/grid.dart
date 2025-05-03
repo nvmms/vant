@@ -75,7 +75,6 @@ class VanGrid extends StatelessWidget {
             height: square ? width : null,
             padding: VanGridItemContentPadding,
             decoration: BoxDecoration(
-              // color: VanGridItemContentBackground,
               border: Border(
                 left: isFirstColumn(index) ? borderSide : BorderSide.none,
                 top: isFirstRow(index) ? borderSide : BorderSide.none,
