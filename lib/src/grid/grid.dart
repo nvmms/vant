@@ -83,12 +83,17 @@ class VanGrid extends StatelessWidget {
                 bottom: borderSide,
               ),
             ),
-            child: VantSpace(
-              spacing: 8,
-              direction: Axis.vertical,
-              mainAxisAlignment:
-                  center ? MainAxisAlignment.center : MainAxisAlignment.start,
-              children: buildChild(item),
+            child: VanBadge(
+              content: item.content,
+              count: item.count,
+              dot: item.dot,
+              child: VantSpace(
+                spacing: 4,
+                direction: Axis.vertical,
+                mainAxisAlignment:
+                    center ? MainAxisAlignment.center : MainAxisAlignment.start,
+                children: buildChild(item),
+              ),
             ),
           );
           return Material(

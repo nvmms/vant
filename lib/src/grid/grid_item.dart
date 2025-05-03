@@ -5,8 +5,9 @@ class VanGridItem {
   final IconData? icon;
   final Widget? child;
   final Color? iconColor;
-  final bool dot;
-  final dynamic badge;
+  final bool? dot;
+  final String? content;
+  final int? count;
 
   const VanGridItem({
     this.text,
@@ -14,6 +15,7 @@ class VanGridItem {
     this.child,
     this.iconColor,
     this.dot = false,
-    this.badge,
+    this.content,
+    this.count,
   }) : assert(child != null || icon != null || text != null);
 }

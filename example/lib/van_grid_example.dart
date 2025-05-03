@@ -14,9 +14,9 @@ class VanGridExample extends StatelessWidget {
               padding: EdgeInsets.all(10),
               child: VanGrid(
                 square: true,
-                // border: false,
                 children: [
                   VanGridItem(
+                    dot: true,
                     icon: Icons.apple,
                     text: "A",
                   ),
