@@ -15,6 +15,7 @@ class VanBadgeExample extends StatelessWidget {
             VanCheckbox(
               shape: VanCheckboxShape.round,
               text: "sdfasdfasdfasdfasdf",
+              labelDisabled: true,
             ),
           ],
         ),

@@ -25,6 +25,7 @@ class VanCheckbox extends StatefulWidget {
     this.indeterminate = false,
     this.text,
     this.checked = false,
+    this.onToggle,
   });
 
   final VanCheckboxShape shape;
@@ -37,6 +38,7 @@ class VanCheckbox extends StatefulWidget {
   final bool indeterminate;
   final String? text;
   final bool checked;
+  final ValueChanged<bool>? onToggle;
 
   @override
   State<StatefulWidget> createState() => _VanCheckboxState();
@@ -44,6 +46,12 @@ class VanCheckbox extends StatefulWidget {
 
 class _VanCheckboxState extends State<VanCheckbox> {
   bool isChecked = false;
+
+  void toggle() {
+    isChecked = !isChecked;
+    widget.onToggle?.call(isChecked);
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,10 +69,7 @@ class _VanCheckboxState extends State<VanCheckbox> {
             ),
           ),
           child: InkWell(
-            onTap: () {
-              isChecked = !isChecked;
-              setState(() {});
-            },
+            onTap: toggle,
             child: SizedBox(
               width: vanCheckboxSize,
               height: vanCheckboxSize,
@@ -77,11 +82,14 @@ class _VanCheckboxState extends State<VanCheckbox> {
           ),
         ),
         if (widget.text != null)
-          Text(
-            "${widget.text}",
-            style: const TextStyle(
-              color: vanCheckboxLabelColor,
-              fontSize: vanCheckboxLabelFontSize,
+          GestureDetector(
+            onTap: widget.labelDisabled ? null : toggle,
+            child: Text(
+              "${widget.text}",
+              style: const TextStyle(
+                color: vanCheckboxLabelColor,
+                fontSize: vanCheckboxLabelFontSize,
+              ),
             ),
           ),
       ],
