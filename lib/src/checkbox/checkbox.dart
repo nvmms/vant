@@ -47,6 +47,12 @@ class VanCheckbox extends StatefulWidget {
 class _VanCheckboxState extends State<VanCheckbox> {
   bool isChecked = false;
 
+  @override
+  void initState() {
+    super.initState();
+    isChecked = widget.checked;
+  }
+
   void toggle() {
     isChecked = !isChecked;
     widget.onToggle?.call(isChecked);
