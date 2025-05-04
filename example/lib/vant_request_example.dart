@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:vant/vant.dart';
 
-class VantRequestExample extends StatelessWidget {
-  const VantRequestExample({super.key});
+class VanRequestExample extends StatelessWidget {
+  const VanRequestExample({super.key});
 
   @override
   Widget build(BuildContext context) {
-    VantRequestProvider<String> provider = VantRequestProvider<String>();
+    VanRequestProvider<String> provider = VanRequestProvider<String>();
     provider.onQuery = (page) {
       Future.delayed(const Duration(milliseconds: 200), () {
         provider.complete(
@@ -21,7 +21,7 @@ class VantRequestExample extends StatelessWidget {
         appBar: AppBar(
           title: const Text("VantRequestExample"),
         ),
-        body: VantRequest(
+        body: VanRequest(
           provider: provider,
           itemBuilder: (context, item, index) => Container(
             padding: const EdgeInsets.all(10),
@@ -37,5 +37,5 @@ class VantRequestExample extends StatelessWidget {
 }
 
 void main() {
-  runApp(const VantRequestExample());
+  runApp(const VanRequestExample());
 }

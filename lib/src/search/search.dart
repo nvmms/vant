@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class VantSearch extends StatefulWidget {
+class VanSearch extends StatefulWidget {
   /// 当前输入的值
   final String value;
 
@@ -94,7 +94,7 @@ class VantSearch extends StatefulWidget {
   /// 失焦回调
   final VoidCallback? onBlur;
 
-  const VantSearch({
+  const VanSearch({
     super.key,
     this.value = '',
     this.label,
@@ -130,7 +130,7 @@ class VantSearch extends StatefulWidget {
   });
 
   @override
-  State createState() => _VantSearchState();
+  State createState() => _VanSearchState();
 }
 
 enum ClearTrigger {
@@ -143,7 +143,7 @@ enum FormatTrigger {
   onBlur,
 }
 
-class _VantSearchState extends State<VantSearch> {
+class _VanSearchState extends State<VanSearch> {
   late TextEditingController _controller;
   late FocusNode _focusNode;
   bool _showClear = false;
@@ -158,7 +158,7 @@ class _VantSearchState extends State<VantSearch> {
   }
 
   @override
-  void didUpdateWidget(VantSearch oldWidget) {
+  void didUpdateWidget(VanSearch oldWidget) {
     super.didUpdateWidget(oldWidget);
     if (widget.value != _controller.text) {
       _controller.text = widget.value;

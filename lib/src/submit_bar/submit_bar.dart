@@ -79,7 +79,7 @@ class VanSubmitBar extends StatelessWidget {
     if (top != null) {
       return top;
     } else if (tip != null || tipWidget != null) {
-      Widget child = VantSpace(children: [
+      Widget child = VanSpace(children: [
         if (tipIcon != null)
           Icon(
             tipIcon,
@@ -124,7 +124,7 @@ class VanSubmitBar extends StatelessWidget {
           decoration: const BoxDecoration(
             color: VanSubmitBarBackground,
           ),
-          child: VantSpace(
+          child: VanSpace(
             children: [
               if (child != null) child!,
               Expanded(

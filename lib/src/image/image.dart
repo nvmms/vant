@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 /// Vant风格的Image组件
-class VantImage extends StatelessWidget {
+class VanImage extends StatelessWidget {
   /// 图片地址，可以是网络图片(http开头)或资源图片(assets路径)
   final String src;
 
@@ -29,7 +29,7 @@ class VantImage extends StatelessWidget {
   /// 是否启用懒加载
   final bool lazyLoad;
 
-  const VantImage({
+  const VanImage({
     super.key,
     required this.src,
     this.width,
@@ -45,7 +45,7 @@ class VantImage extends StatelessWidget {
   /// 创建一个正方形图片
   ///
   /// [size] 图片的宽度和高度
-  const VantImage.square({
+  const VanImage.square({
     super.key,
     required this.src,
     required double size,
@@ -61,7 +61,7 @@ class VantImage extends StatelessWidget {
   /// 创建一个圆形图片
   ///
   /// [size] 图片的宽度和高度
-  const VantImage.round({
+  const VanImage.round({
     super.key,
     required this.src,
     required double size,

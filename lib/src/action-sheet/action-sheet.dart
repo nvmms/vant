@@ -116,7 +116,7 @@ class _VanActionSheet extends StatelessWidget {
                   },
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-              child: VantSpace(
+              child: VanSpace(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [

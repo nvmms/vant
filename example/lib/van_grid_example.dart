@@ -7,7 +7,7 @@ class VanGridExample extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: const SingleChildScrollView(
-        child: VantSpace(
+        child: VanSpace(
           direction: Axis.vertical,
           children: [
             Padding(

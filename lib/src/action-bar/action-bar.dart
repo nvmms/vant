@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class VantActionBar extends StatelessWidget {
+class VanActionBar extends StatelessWidget {
   /// 安全区域适配
   final bool safeAreaInsetBottom;
 
@@ -8,12 +8,12 @@ class VantActionBar extends StatelessWidget {
   final Color? backgroundColor;
 
   /// 图标按钮列表
-  final List<VantActionBarIcon>? icons;
+  final List<VanActionBarIcon>? icons;
 
   /// 普通按钮列表
-  final List<VantActionBarButton>? buttons;
+  final List<VanActionBarButton>? buttons;
 
-  const VantActionBar({
+  const VanActionBar({
     super.key,
     this.safeAreaInsetBottom = true,
     this.backgroundColor,
@@ -66,7 +66,7 @@ class VantActionBar extends StatelessWidget {
     );
   }
 
-  Widget _buildIcon(BuildContext context, VantActionBarIcon icon) {
+  Widget _buildIcon(BuildContext context, VanActionBarIcon icon) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
@@ -102,7 +102,7 @@ class VantActionBar extends StatelessWidget {
     );
   }
 
-  Widget _buildButton(BuildContext context, VantActionBarButton button) {
+  Widget _buildButton(BuildContext context, VanActionBarButton button) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     return Expanded(
@@ -130,7 +130,7 @@ class VantActionBar extends StatelessWidget {
   }
 
   Widget _buildLoadingIndicator(
-      VantActionBarButton button, BuildContext context) {
+      VanActionBarButton button, BuildContext context) {
     return SizedBox(
       width: 20,
       height: 20,
@@ -145,7 +145,7 @@ class VantActionBar extends StatelessWidget {
     );
   }
 
-  Widget _buildBadge(VantActionBarBadge badge, BuildContext context) {
+  Widget _buildBadge(VanActionBarBadge badge, BuildContext context) {
     return Container(
       padding: badge.padding ??
           EdgeInsets.symmetric(
@@ -175,7 +175,7 @@ class VantActionBar extends StatelessWidget {
 }
 
 /// 图标按钮组件 (对应 van-action-bar-icon)
-class VantActionBarIcon {
+class VanActionBarIcon {
   /// 图标组件
   final IconData icon;
 
@@ -192,9 +192,9 @@ class VantActionBarIcon {
   final Color? color;
 
   /// 徽标
-  final VantActionBarBadge? badge;
+  final VanActionBarBadge? badge;
 
-  const VantActionBarIcon({
+  const VanActionBarIcon({
     required this.icon,
     this.onPressed,
     this.text = "",
@@ -205,7 +205,7 @@ class VantActionBarIcon {
 }
 
 /// 普通按钮组件 (对应 van-action-bar-button)
-class VantActionBarButton {
+class VanActionBarButton {
   /// 按钮文字
   final String text;
 
@@ -227,7 +227,7 @@ class VantActionBarButton {
   /// 是否显示为加载状态
   final bool loading;
 
-  const VantActionBarButton({
+  const VanActionBarButton({
     required this.text,
     this.type = VantActionBarButtonType.defaultType,
     this.onPressed,
@@ -251,7 +251,7 @@ class VantActionBarButton {
 }
 
 /// 徽标组件
-class VantActionBarBadge {
+class VanActionBarBadge {
   /// 徽标内容
   final String? content;
 
@@ -276,7 +276,7 @@ class VantActionBarBadge {
   /// 内边距
   final EdgeInsets? padding;
 
-  const VantActionBarBadge({
+  const VanActionBarBadge({
     this.content,
     this.dot = false,
     this.backgroundColor,

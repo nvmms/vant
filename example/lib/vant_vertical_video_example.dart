@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:vant/vant.dart';
 
-class VantVerticalVideoExample extends StatelessWidget {
-  const VantVerticalVideoExample({super.key});
+class VanVerticalVideoExample extends StatelessWidget {
+  const VanVerticalVideoExample({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var provider = VantRequestProvider<Map<String, String>>();
+    var provider = VanRequestProvider<Map<String, String>>();
     provider.onQuery = (pageIndex) {
       Future.delayed(const Duration(seconds: 1), () {
         provider.complete(
@@ -34,16 +34,16 @@ class VantVerticalVideoExample extends StatelessWidget {
         appBar: AppBar(
           title: const Text("Vant Vertical Video Example"),
         ),
-        body: VantRequest<Map<String, String>>(
+        body: VanRequest<Map<String, String>>(
           provider: provider,
-          builder: (context, data) => VantVerticalVideo(
+          builder: (context, data) => VanVerticalVideo(
             data: data,
             itemBuilder: (item, index, currentIndex) =>
-                VantVerticalVideoItem<Map<String, String>>(
+                VanVerticalVideoItem<Map<String, String>>(
               item: item,
               index: index,
               currentIndex: currentIndex,
-              extractor: VantVerticalVideoDataExtractor(
+              extractor: VanVerticalVideoDataExtractor(
                 getVideoSrc: (item) => item["getVideoSrc"]!,
                 getCoverImage: (item) =>
                     "http://gips3.baidu.com/it/u=3886271102,3123389489&fm=3028&app=3028&f=JPEG&fmt=auto?w=1280&h=960",
@@ -74,5 +74,5 @@ class VantVerticalVideoExample extends StatelessWidget {
 }
 
 void main() {
-  runApp(const VantVerticalVideoExample());
+  runApp(const VanVerticalVideoExample());
 }

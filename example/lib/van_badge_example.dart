@@ -9,7 +9,7 @@ class VanBadgeExample extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: SingleChildScrollView(
-        child: VantSpace(
+        child: VanSpace(
           direction: Axis.vertical,
           children: [
             VanBadge(

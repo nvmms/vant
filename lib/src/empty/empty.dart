@@ -16,7 +16,7 @@ enum VantEmptyType {
 }
 
 /// Vant风格的Empty组件
-class VantEmpty extends StatelessWidget {
+class VanEmpty extends StatelessWidget {
   /// 空状态类型
   final VantEmptyType type;
 
@@ -38,7 +38,7 @@ class VantEmpty extends StatelessWidget {
   /// 底部内容
   final Widget? bottom;
 
-  const VantEmpty({
+  const VanEmpty({
     super.key,
     this.type = VantEmptyType.normal,
     this.image,

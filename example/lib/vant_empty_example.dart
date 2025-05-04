@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vant/vant.dart';
 
-class VantEmptyExample extends StatelessWidget {
-  const VantEmptyExample({super.key});
+class VanEmptyExample extends StatelessWidget {
+  const VanEmptyExample({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +11,7 @@ class VantEmptyExample extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Vant Empty Example'),
         ),
-        body: const VantEmpty(
+        body: const VanEmpty(
           description: "暂无更多数据",
         ),
       ),
@@ -20,5 +20,5 @@ class VantEmptyExample extends StatelessWidget {
 }
 
 void main() {
-  runApp(const VantEmptyExample());
+  runApp(const VanEmptyExample());
 }

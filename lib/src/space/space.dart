@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class VantSpace extends StatelessWidget {
+class VanSpace extends StatelessWidget {
   /// 主轴方向，默认为水平方向
   final Axis direction;
 
@@ -19,7 +19,7 @@ class VantSpace extends StatelessWidget {
   /// 子组件列表
   final List<Widget> children;
 
-  const VantSpace({
+  const VanSpace({
     Key? key,
     this.direction = Axis.horizontal,
     this.spacing = 8.0,

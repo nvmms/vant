@@ -86,7 +86,7 @@ class VanGrid extends StatelessWidget {
               content: item.content,
               count: item.count,
               dot: item.dot,
-              child: VantSpace(
+              child: VanSpace(
                 spacing: 4,
                 direction: Axis.vertical,
                 mainAxisAlignment:

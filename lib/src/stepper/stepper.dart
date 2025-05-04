@@ -291,7 +291,7 @@ class _VanStepperState extends State<VanStepper> {
 
   @override
   Widget build(BuildContext context) {
-    return VantSpace(
+    return VanSpace(
       spacing: 2,
       children: [
         // 减少按钮

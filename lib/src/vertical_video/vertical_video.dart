@@ -10,8 +10,8 @@ import 'package:path_provider/path_provider.dart';
 import 'package:dio/dio.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 
-class VantVerticalVideoPlayer extends StatefulWidget {
-  const VantVerticalVideoPlayer({
+class VanVerticalVideoPlayer extends StatefulWidget {
+  const VanVerticalVideoPlayer({
     super.key,
     required this.src,
     this.autoPlay = false,
@@ -21,11 +21,10 @@ class VantVerticalVideoPlayer extends StatefulWidget {
   final bool autoPlay;
 
   @override
-  State<VantVerticalVideoPlayer> createState() =>
-      _VantVerticalVideoPlayerState();
+  State<VanVerticalVideoPlayer> createState() => _VanVerticalVideoPlayerState();
 }
 
-class _VantVerticalVideoPlayerState extends State<VantVerticalVideoPlayer> {
+class _VanVerticalVideoPlayerState extends State<VanVerticalVideoPlayer> {
   VideoPlayerController? _controller;
   late Directory _directory;
   CancelToken cancelToken = CancelToken();
@@ -119,7 +118,7 @@ class _VantVerticalVideoPlayerState extends State<VantVerticalVideoPlayer> {
   }
 }
 
-class VantVerticalVideoDataExtractor<T> {
+class VanVerticalVideoDataExtractor<T> {
   final String Function(T) getVideoSrc;
   final String Function(T) getCoverImage;
   final String Function(T) getTitle;
@@ -134,7 +133,7 @@ class VantVerticalVideoDataExtractor<T> {
   final bool Function(T) isCollect;
   final bool Function(T) isFollow;
 
-  const VantVerticalVideoDataExtractor({
+  const VanVerticalVideoDataExtractor({
     required this.getVideoSrc,
     required this.getCoverImage,
     required this.getTitle,
@@ -151,8 +150,8 @@ class VantVerticalVideoDataExtractor<T> {
   });
 }
 
-class VantVerticalVideoItem<T> extends StatelessWidget {
-  const VantVerticalVideoItem({
+class VanVerticalVideoItem<T> extends StatelessWidget {
+  const VanVerticalVideoItem({
     super.key,
     required this.item,
     required this.index,
@@ -163,7 +162,7 @@ class VantVerticalVideoItem<T> extends StatelessWidget {
   final T item;
   final int index;
   final int currentIndex;
-  final VantVerticalVideoDataExtractor<T> extractor;
+  final VanVerticalVideoDataExtractor<T> extractor;
   final Future<bool?> Function(T item, int index, int type)? onTap;
 
   ///
@@ -202,7 +201,7 @@ class VantVerticalVideoItem<T> extends StatelessWidget {
                       child: Row(
                         children: [
                           InkWell(
-                            child: VantImage(
+                            child: VanImage(
                               src: extractor.getAvatarUrl(item),
                               width: 30,
                               height: 30,
@@ -381,7 +380,7 @@ class VantVerticalVideoItem<T> extends StatelessWidget {
         color: Colors.black,
         child: Stack(
           children: [
-            VantVerticalVideoPlayer(src: extractor.getVideoSrc(item)),
+            VanVerticalVideoPlayer(src: extractor.getVideoSrc(item)),
             // 视频
             ..._buildVideoInfo(),
           ],
@@ -394,7 +393,7 @@ class VantVerticalVideoItem<T> extends StatelessWidget {
         child: Stack(
           children: [
             Center(
-              child: VantImage(src: extractor.getCoverImage(item)),
+              child: VanImage(src: extractor.getCoverImage(item)),
             ),
             // 视频
             ..._buildVideoInfo(),
@@ -413,8 +412,8 @@ class VantVerticalVideoItem<T> extends StatelessWidget {
 typedef VantVerticalVideoItemBuilder<T> = Widget Function(
     int index, int currentIndex, T item);
 
-class VantVerticalVideo<T> extends StatefulWidget {
-  const VantVerticalVideo({
+class VanVerticalVideo<T> extends StatefulWidget {
+  const VanVerticalVideo({
     super.key,
     required this.data,
     required this.itemBuilder,
@@ -428,10 +427,10 @@ class VantVerticalVideo<T> extends StatefulWidget {
   final Widget Function(T item, int index, int currentIndex) itemBuilder;
 
   @override
-  State<VantVerticalVideo<T>> createState() => _VantVerticalVideoState<T>();
+  State<VanVerticalVideo<T>> createState() => _VanVerticalVideoState<T>();
 }
 
-class _VantVerticalVideoState<T> extends State<VantVerticalVideo<T>> {
+class _VanVerticalVideoState<T> extends State<VanVerticalVideo<T>> {
   late PreloadPageController controller;
   int currentIndex = 0;
   @override

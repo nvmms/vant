@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:vant/vant.dart';
 
-class VantActionBarExample extends StatelessWidget {
-  const VantActionBarExample({super.key});
+class VanActionBarExample extends StatelessWidget {
+  const VanActionBarExample({super.key});
 
   @override
   Widget build(Object context) {
@@ -10,33 +10,33 @@ class VantActionBarExample extends StatelessWidget {
       appBar: AppBar(
         title: const Text("VantActionBar"),
       ),
-      body: VantActionBar(
+      body: VanActionBar(
         icons: [
-          VantActionBarIcon(
+          VanActionBarIcon(
             icon: Icons.chat,
             text: "客服",
             onPressed: () => print('客服'),
-            badge: VantActionBarBadge(dot: true),
+            badge: VanActionBarBadge(dot: true),
           ),
-          VantActionBarIcon(
+          VanActionBarIcon(
             icon: Icons.shopping_cart,
             text: "购物车",
             onPressed: () => print('购物车'),
-            badge: VantActionBarBadge(content: '5'),
+            badge: VanActionBarBadge(content: '5'),
           ),
-          VantActionBarIcon(
+          VanActionBarIcon(
             icon: Icons.star,
             text: "收藏",
             onPressed: () => print('收藏'),
           ),
         ],
         buttons: [
-          VantActionBarButton(
+          VanActionBarButton(
             text: "加入购物车",
             type: VantActionBarButtonType.primary,
             onPressed: () => print('加入购物车'),
           ),
-          VantActionBarButton(
+          VanActionBarButton(
             text: "立即购买",
             type: VantActionBarButtonType.danger,
             onPressed: () => print('立即购买'),
@@ -48,5 +48,5 @@ class VantActionBarExample extends StatelessWidget {
 }
 
 void main() {
-  runApp(MaterialApp(home: VantActionBarExample()));
+  runApp(MaterialApp(home: VanActionBarExample()));
 }

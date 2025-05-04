@@ -12,7 +12,7 @@ enum VantRequestStatus {
   complete,
 }
 
-class VantRequestProvider<T> extends ChangeNotifier {
+class VanRequestProvider<T> extends ChangeNotifier {
   VantRequestStatus status = VantRequestStatus.loading;
 
   /// 1 EasyRefresh下拉刷新
@@ -25,7 +25,7 @@ class VantRequestProvider<T> extends ChangeNotifier {
   Completer<IndicatorResult>? completer;
   EasyRefreshController? _easyRefreshController;
 
-  VantRequestProvider() {
+  VanRequestProvider() {
     _easyRefreshController = EasyRefreshController(
       controlFinishLoad: true,
       controlFinishRefresh: true,
@@ -103,8 +103,8 @@ typedef VantRequestBuilder<T> = Widget Function(
     BuildContext context, List<T> item);
 typedef VantRequestQuery<T> = void Function(int page);
 
-class VantRequest<T> extends StatefulWidget {
-  const VantRequest({
+class VanRequest<T> extends StatefulWidget {
+  const VanRequest({
     super.key,
     required this.provider,
     this.itemBuilder,
@@ -121,7 +121,7 @@ class VantRequest<T> extends StatefulWidget {
             "itemBuilder or builder is required");
 
   final VantRequestItemBuilder<T>? itemBuilder;
-  final VantRequestProvider<T> provider;
+  final VanRequestProvider<T> provider;
   final Header? refreshHeader;
   final Footer? refreshFooter;
   final Widget Function(BuildContext context)? header;
@@ -133,10 +133,10 @@ class VantRequest<T> extends StatefulWidget {
   final EdgeInsets? padding;
 
   @override
-  State<VantRequest<T>> createState() => _VantRequestState<T>();
+  State<VanRequest<T>> createState() => _VanRequestState<T>();
 }
 
-class _VantRequestState<T> extends State<VantRequest<T>> {
+class _VanRequestState<T> extends State<VanRequest<T>> {
   EasyRefreshController easyRefreshController = EasyRefreshController(
     controlFinishLoad: true,
     controlFinishRefresh: true,
@@ -149,7 +149,7 @@ class _VantRequestState<T> extends State<VantRequest<T>> {
   }
 
   @override
-  void didUpdateWidget(covariant VantRequest<T> oldWidget) {
+  void didUpdateWidget(covariant VanRequest<T> oldWidget) {
     super.didUpdateWidget(oldWidget);
     widget.provider.refresh();
   }
@@ -158,8 +158,7 @@ class _VantRequestState<T> extends State<VantRequest<T>> {
   Widget build(BuildContext context) {
     return ChangeNotifierProvider.value(
       value: widget.provider,
-      child:
-          Selector<VantRequestProvider<T>, (List<T>, VantRequestStatus, int)>(
+      child: Selector<VanRequestProvider<T>, (List<T>, VantRequestStatus, int)>(
         selector: (context, provider) => (
           provider.data,
           provider.status,
@@ -181,7 +180,7 @@ class _VantRequestState<T> extends State<VantRequest<T>> {
                   );
             case VantRequestStatus.empty:
               return widget.empty ??
-                  VantEmpty(
+                  VanEmpty(
                     description: "暂无更多数据",
                     type: VantEmptyType.normal,
                     bottom: SizedBox(
@@ -198,7 +197,7 @@ class _VantRequestState<T> extends State<VantRequest<T>> {
                   );
             case VantRequestStatus.error:
               return widget.error?.call(widget.provider.error) ??
-                  VantEmpty(
+                  VanEmpty(
                     description: widget.provider.error,
                     type: VantEmptyType.error,
                     bottom: SizedBox(
