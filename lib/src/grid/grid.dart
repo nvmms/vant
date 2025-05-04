@@ -37,7 +37,7 @@ class VanGrid extends StatelessWidget {
   double get borderWidth => border ? 1 : 0;
 
   BorderSide get borderSide => BorderSide(
-      width: borderWidth, color: border ? VanBorderColor : Colors.transparent);
+      width: borderWidth, color: border ? vanBorderColor : Colors.transparent);
 
   bool isFirstRow(int index) {
     return index < columnNum;
@@ -73,7 +73,7 @@ class VanGrid extends StatelessWidget {
           var child = Container(
             width: width,
             height: square ? width : null,
-            padding: VanGridItemContentPadding,
+            padding: vanGridItemContentPadding,
             decoration: BoxDecoration(
               border: Border(
                 left: isFirstColumn(index) ? borderSide : BorderSide.none,
@@ -96,7 +96,7 @@ class VanGrid extends StatelessWidget {
             ),
           );
           return Material(
-            color: VanGridItemContentBackground, // 保持透明或你想要的背景色
+            color: vanGridItemContentBackground, // 保持透明或你想要的背景色
             child: InkWell(
               onTap: onItemClick != null
                   ? () {

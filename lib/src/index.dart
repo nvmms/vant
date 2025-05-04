@@ -15,3 +15,4 @@ export 'input/index.dart';
 export 'grid/index.dart';
 export 'badge/index.dart';
 export 'submit_bar/index.dart';
+export 'checkbox/index.dart';

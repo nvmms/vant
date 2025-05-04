@@ -83,15 +83,15 @@ class VanSubmitBar extends StatelessWidget {
         if (tipIcon != null)
           Icon(
             tipIcon,
-            size: VanSubmitBarTipIconSize,
-            color: VanSubmitBarTipColor,
+            size: vanSubmitBarTipIconSize,
+            color: vanSubmitBarTipColor,
           ),
         Text(
           "$tip",
           style: const TextStyle(
-            fontSize: VanSubmitBarTipFontSize,
-            color: VanSubmitBarTipColor,
-            height: VanSubmitBarTipLineHeight,
+            fontSize: vanSubmitBarTipFontSize,
+            color: vanSubmitBarTipColor,
+            height: vanSubmitBarTipLineHeight,
           ),
         ),
       ]);
@@ -101,9 +101,9 @@ class VanSubmitBar extends StatelessWidget {
 
       return Container(
         width: double.infinity,
-        padding: VanSubmitBarTipPadding,
+        padding: vanSubmitBarTipPadding,
         decoration: const BoxDecoration(
-          color: VanSubmitBarTipBackground,
+          color: vanSubmitBarTipBackground,
         ),
         child: child,
       );
@@ -119,10 +119,10 @@ class VanSubmitBar extends StatelessWidget {
       children: [
         if (getTip != null) getTip!,
         Container(
-          height: VanSubmitBarHeight,
-          padding: VanSubmitBarPadding,
+          height: vanSubmitBarHeight,
+          padding: vanSubmitBarPadding,
           decoration: const BoxDecoration(
-            color: VanSubmitBarBackground,
+            color: vanSubmitBarBackground,
           ),
           child: VanSpace(
             children: [
@@ -131,23 +131,23 @@ class VanSubmitBar extends StatelessWidget {
                 child: Text.rich(
                   TextSpan(
                     style: const TextStyle(
-                      color: VanSubmitBarTextColor,
-                      fontSize: VanSubmitBarTextFontSize,
+                      color: vanSubmitBarTextColor,
+                      fontSize: vanSubmitBarTextFontSize,
                     ),
                     children: [
                       TextSpan(text: label),
                       TextSpan(
                         style: const TextStyle(
-                          color: VanSubmitBarPriceColor,
-                          fontSize: VanSubmitBarPriceFontSize,
+                          color: vanSubmitBarPriceColor,
+                          fontSize: vanSubmitBarPriceFontSize,
                         ),
                         children: [
                           TextSpan(text: currency),
                           TextSpan(
                             text: priceInteger,
                             style: const TextStyle(
-                              fontSize: VanSubmitBarPriceIntegerFontSize,
-                              color: VanSubmitBarPriceColor,
+                              fontSize: vanSubmitBarPriceIntegerFontSize,
+                              color: vanSubmitBarPriceColor,
                             ),
                           ),
                           TextSpan(text: '.$priceDecimal'),
@@ -162,8 +162,8 @@ class VanSubmitBar extends StatelessWidget {
               if (button != null) button!,
               if (button == null)
                 SizedBox(
-                  width: VanSubmitBarButtonWidth,
-                  height: VanSubmitBarButtonHeight,
+                  width: vanSubmitBarButtonWidth,
+                  height: vanSubmitBarButtonHeight,
                   child: VanButton(
                     type: buttonType,
                     text: buttonText,

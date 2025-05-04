@@ -14,7 +14,7 @@ class VanBadge extends StatelessWidget {
     this.content,
     this.dot,
     this.count,
-    this.color = VanBadgeBackground,
+    this.color = vanBadgeBackground,
     this.max = 99,
     this.showZero = false,
     this.position = VanBadgePosition.topRight,
@@ -88,7 +88,7 @@ class VanBadge extends StatelessWidget {
   Widget get childContainer {
     if (text.isNotEmpty) {
       return Container(
-        padding: VanBadgePadding,
+        padding: vanBadgePadding,
         decoration: BoxDecoration(
           color: color,
           borderRadius: const BorderRadius.all(
@@ -98,19 +98,19 @@ class VanBadge extends StatelessWidget {
         child: Text(
           text,
           style: const TextStyle(
-            color: VanBadgeColor,
-            fontSize: VanBadgeFontSize,
+            color: vanBadgeColor,
+            fontSize: vanBadgeFontSize,
           ),
         ),
       );
     } else if (dot == true) {
       return Container(
-        width: VanBadgeDotSize,
-        height: VanBadgeDotSize,
+        width: vanBadgeDotSize,
+        height: vanBadgeDotSize,
         decoration: BoxDecoration(
           color: color,
           borderRadius: const BorderRadius.all(
-            Radius.circular(VanBadgeDotSize),
+            Radius.circular(vanBadgeDotSize),
           ),
         ),
       );
