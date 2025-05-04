@@ -7,20 +7,22 @@ class VanSubmitBarExample extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            VanSubmitBar(
-              price: 100523,
-              button: VanButton(
-                text: "取消订单",
-                type: VanType.warning,
-              ),
-            ),
-          ],
-        ),
+      appBar: AppBar(
+        title: const Text("购物车"),
       ),
+      body: Column(
+        children: [
+          Text("data"),
+          Text("data"),
+          Text("data"),
+          Text("data"),
+          Text("data"),
+          Text("data"),
+          Text("data"),
+          Text("data"),
+        ],
+      ),
+      bottomNavigationBar: VanSubmitBar(price: 1000),
     );
   }
 }

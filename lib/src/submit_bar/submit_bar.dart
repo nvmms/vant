@@ -105,7 +105,7 @@ class VanSubmitBar extends StatelessWidget {
         decoration: const BoxDecoration(
           color: VanSubmitBarTipBackground,
         ),
-        child: tipWidget,
+        child: child,
       );
     } else {
       return null;
@@ -115,7 +115,7 @@ class VanSubmitBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisSize: MainAxisSize.max,
+      mainAxisSize: MainAxisSize.min,
       children: [
         if (getTip != null) getTip!,
         Container(
