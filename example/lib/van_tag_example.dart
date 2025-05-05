@@ -8,19 +8,41 @@ class VanBadgeExample extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: VanSpace(
           direction: Axis.vertical,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            VanTag(text: "标签", closeable: true),
-            VanTag(text: "标签", round: true),
-            VanTag(text: "标签", plain: true, type: VanType.primary),
-            VanTag(
-              text: "标签",
-              plain: true,
-              size: VanTagSize.large,
-              closeable: true,
+            VanCell(
+              title: "aa",
+              valueWidget: VanTag(
+                text: "标签",
+                closeable: true,
+                type: VanType.danger,
+              ),
             ),
+
+            Wrap(
+              // alignment: WrapAlignment.start,
+              // crossAxisAlignment: WrapCrossAlignment.start,
+              children: [
+                VanTag(
+                  text: "标签",
+                  closeable: true,
+                  type: VanType.danger,
+                ),
+              ],
+            ),
+
+            // VanTag(text: "标签", round: true),
+            // VanTag(text: "标签", plain: true, type: VanType.primary),
+            // VanTag(
+            //   text: "标签",
+            //   plain: true,
+            //   size: VanTagSize.large,
+            //   closeable: true,
+            // ),
           ],
         ),
       ),

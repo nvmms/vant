@@ -167,8 +167,13 @@ class VanTag extends StatelessWidget {
           onClick?.call();
         },
         child: Container(
+          constraints: const BoxConstraints(
+            // 可选：设置最小宽度（如果需要）
+            minWidth: 40, // 防止标签太窄
+          ),
           padding: _getPadding,
-          child: VanSpace(
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
