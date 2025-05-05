@@ -17,3 +17,4 @@ export 'badge/index.dart';
 export 'submit_bar/index.dart';
 export 'checkbox/index.dart';
 export 'tag/index.dart';
+export 'page_view/index.dart';
