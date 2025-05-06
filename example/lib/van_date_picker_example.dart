@@ -12,25 +12,25 @@ class VanDatePickerExample extends StatelessWidget {
         child: VanSpace(
           direction: Axis.vertical,
           children: [
-            VanDatePicker(
-              options: VanDatePickerOptions(
-                columnsType: [
-                  ColumnsType.year,
-                  ColumnsType.month,
-                  ColumnsType.day,
-                ],
-              ),
-            ),
-            Builder(
-              builder: (context) {
-                return VanButton(
-                  text: "显示",
-                  onPressed: () {
-                    showVanDatePicker(context);
-                  },
-                );
-              },
-            ),
+            // VanDatePicker(
+            //   options: VanDatePickerOptions(
+            //     columnsType: [
+            //       ColumnsType.year,
+            //       ColumnsType.month,
+            //       ColumnsType.day,
+            //     ],
+            //   ),
+            // ),
+            // Builder(
+            //   builder: (context) {
+            //     return VanButton(
+            //       text: "显示",
+            //       onPressed: () {
+            //         showVanDatePicker(context);
+            //       },
+            //     );
+            //   },
+            // ),
           ],
         ),
       ),
