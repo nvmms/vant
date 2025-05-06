@@ -38,7 +38,6 @@ const vanPickerOptionFontSize =
     vanFontSizeLg; // 示例值，请根据 --van-font-size-lg 的实际值调整
 
 // 选项内边距
-
 const vanPickerOptionPadding = EdgeInsets.symmetric(
   horizontal: 0,
   vertical: vanPaddingBase,
@@ -46,7 +45,7 @@ const vanPickerOptionPadding = EdgeInsets.symmetric(
 
 // 选项文本颜色
 const vanPickerOptionTextColor =
-    Color(0xFF323233); // 示例颜色，请根据 --van-text-color 的实际值调整
+    vanTextColor; // 示例颜色，请根据 --van-text-color 的实际值调整
 
 // 禁用选项的不透明度
 const vanPickerOptionDisabledOpacity = 0.3;
