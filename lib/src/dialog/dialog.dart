@@ -23,6 +23,12 @@ class VanDialogOptions {
   final Future<bool> Function(String action)? beforeClose; // 关闭前的回调函数
   final String transition; // 动画类名，可以通过 TransitionBuilder 或其他方式实现
 
+  final VoidCallback? onConfirm;
+  final VoidCallback? onCancel;
+  final VoidCallback? onOpen;
+  final VoidCallback? onClose;
+  // final VoidCallback onConfirm;
+
   const VanDialogOptions({
     this.title,
     this.width = vanDialogWidth, // 默认宽度
@@ -44,6 +50,10 @@ class VanDialogOptions {
     this.allowHtml = false,
     this.beforeClose,
     this.transition = '',
+    this.onConfirm,
+    this.onCancel,
+    this.onOpen,
+    this.onClose,
   });
 }
 
@@ -138,8 +148,11 @@ class _VanDialog extends StatelessWidget {
                               ), // 圆角半径
                             ), // 内边距（可选）
                           ),
-                          onPressed:
-                              options.cancelButtonDisabled ? null : () {},
+                          onPressed: options.cancelButtonDisabled
+                              ? null
+                              : () {
+                                  options.onCancel?.call();
+                                },
                           child: Text(
                             options.cancelButtonText,
                             style: TextStyle(color: options.cancelButtonColor),
@@ -165,8 +178,11 @@ class _VanDialog extends StatelessWidget {
                               ), // 圆角半径
                             ), // 内边距（可选）
                           ),
-                          onPressed:
-                              options.confirmButtonDisabled ? null : () {},
+                          onPressed: options.confirmButtonDisabled
+                              ? null
+                              : () {
+                                  options.onConfirm?.call();
+                                },
                           child: Text(
                             options.confirmButtonText,
                             style: TextStyle(color: options.confirmButtonColor),
