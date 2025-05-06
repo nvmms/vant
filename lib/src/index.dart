@@ -21,4 +21,4 @@ export 'page_view/index.dart';
 export 'app_bar/index.dart';
 export 'dialog/index.dart';
 export 'picker/index.dart';
-// export 'date_picker/index.dart';
+export 'date_picker/index.dart';
