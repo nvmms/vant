@@ -29,6 +29,10 @@ class VanDialogOptions {
   final VoidCallback? onClose;
   // final VoidCallback onConfirm;
 
+  final Widget? child;
+  final Widget? titleWidget;
+  final Widget? footerWidget;
+
   const VanDialogOptions({
     this.title,
     this.width = vanDialogWidth, // 默认宽度
@@ -54,6 +58,9 @@ class VanDialogOptions {
     this.onCancel,
     this.onOpen,
     this.onClose,
+    this.titleWidget,
+    this.child,
+    this.footerWidget,
   });
 }
 
@@ -70,6 +77,125 @@ class _VanDialog extends StatelessWidget {
     Navigator.of(context).pop(action);
   }
 
+  Widget _messageWidget(BuildContext context) {
+    if (options.child != null) return options.child!;
+    return Padding(
+      padding: EdgeInsets.fromLTRB(
+        vanDialogMessagePadding,
+        options.title != null ? vanDialogHasTitleMessagePaddingTop : 26,
+        vanDialogMessagePadding,
+        26,
+      ),
+      child: Row(
+        mainAxisAlignment: options.messageAlign,
+        children: [
+          Expanded(
+            child: options.allowHtml
+                ? Text.rich(
+                    TextSpan(text: options.message),
+                  )
+                : ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height *
+                          vanDialogMessageMaxHeight,
+                    ),
+                    child: Text(
+                      options.message,
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: vanDialogMessageFontSize,
+                      ),
+                    ),
+                  ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget get _titleWidget {
+    if (options.titleWidget != null) return options.titleWidget!;
+    return Padding(
+      padding: const EdgeInsets.only(top: vanDialogHeaderPaddingTop),
+      child: Text(
+        options.title!,
+        style: const TextStyle(
+          fontSize: vanDialogFontSize,
+          fontWeight: vanDialogHeaderFontWeight,
+          // height: vanDialogHeaderLineHeight,
+        ),
+      ),
+    );
+  }
+
+  Widget _footerWidget(BuildContext context) {
+    if (options.footerWidget != null) return options.footerWidget!;
+    return Row(
+      children: [
+        if (options.showCancelButton)
+          Expanded(
+            child: SizedBox(
+              height: vanDialogButtonHeight,
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(0),
+                      bottomLeft: Radius.circular(vanDialogRadius),
+                      topRight: Radius.circular(0),
+                      bottomRight: Radius.circular(0),
+                    ), // 圆角半径
+                  ), // 内边距（可选）
+                ),
+                onPressed: options.cancelButtonDisabled
+                    ? null
+                    : () {
+                        options.onCancel?.call();
+                        Navigator.of(context).pop();
+                        options.onClose?.call();
+                      },
+                child: Text(
+                  options.cancelButtonText,
+                  style: TextStyle(color: options.cancelButtonColor),
+                ),
+              ),
+            ),
+          ),
+        if (options.showConfirmButton)
+          Expanded(
+            child: SizedBox(
+              height: vanDialogButtonHeight,
+              child: TextButton(
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.only(
+                      topLeft: const Radius.circular(0),
+                      bottomLeft: options.showCancelButton
+                          ? const Radius.circular(0)
+                          : const Radius.circular(vanDialogRadius),
+                      topRight: const Radius.circular(0),
+                      bottomRight: const Radius.circular(vanDialogRadius),
+                    ), // 圆角半径
+                  ), // 内边距（可选）
+                ),
+                onPressed: options.confirmButtonDisabled
+                    ? null
+                    : () {
+                        options.onConfirm?.call();
+                        Navigator.of(context).pop();
+                        options.onClose?.call();
+                      },
+                child: Text(
+                  options.confirmButtonText,
+                  style: TextStyle(color: options.confirmButtonColor),
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final dialogContent = Material(
@@ -84,119 +210,9 @@ class _VanDialog extends StatelessWidget {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (options.title != null)
-                Padding(
-                  padding:
-                      const EdgeInsets.only(top: vanDialogHeaderPaddingTop),
-                  child: Text(
-                    options.title!,
-                    style: const TextStyle(
-                      fontSize: vanDialogFontSize,
-                      fontWeight: vanDialogHeaderFontWeight,
-                      // height: vanDialogHeaderLineHeight,
-                    ),
-                  ),
-                ),
-              Padding(
-                padding: EdgeInsets.fromLTRB(
-                  vanDialogMessagePadding,
-                  options.title != null
-                      ? vanDialogHasTitleMessagePaddingTop
-                      : 26,
-                  vanDialogMessagePadding,
-                  26,
-                ),
-                child: Row(
-                  mainAxisAlignment: options.messageAlign,
-                  children: [
-                    Expanded(
-                      child: options.allowHtml
-                          ? Text.rich(
-                              TextSpan(text: options.message),
-                            )
-                          : ConstrainedBox(
-                              constraints: BoxConstraints(
-                                maxHeight: MediaQuery.of(context).size.height *
-                                    vanDialogMessageMaxHeight,
-                              ),
-                              child: Text(
-                                options.message,
-                                textAlign: TextAlign.center,
-                                style: const TextStyle(
-                                  fontSize: vanDialogMessageFontSize,
-                                ),
-                              ),
-                            ),
-                    ),
-                  ],
-                ),
-              ),
-              Row(
-                children: [
-                  if (options.showCancelButton)
-                    Expanded(
-                      child: SizedBox(
-                        height: vanDialogButtonHeight,
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                            shape: const RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(0),
-                                bottomLeft: Radius.circular(vanDialogRadius),
-                                topRight: Radius.circular(0),
-                                bottomRight: Radius.circular(0),
-                              ), // 圆角半径
-                            ), // 内边距（可选）
-                          ),
-                          onPressed: options.cancelButtonDisabled
-                              ? null
-                              : () {
-                                  options.onCancel?.call();
-                                  Navigator.of(context).pop();
-                                  options.onClose?.call();
-                                },
-                          child: Text(
-                            options.cancelButtonText,
-                            style: TextStyle(color: options.cancelButtonColor),
-                          ),
-                        ),
-                      ),
-                    ),
-                  if (options.showConfirmButton)
-                    Expanded(
-                      child: SizedBox(
-                        height: vanDialogButtonHeight,
-                        child: TextButton(
-                          style: TextButton.styleFrom(
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.only(
-                                topLeft: const Radius.circular(0),
-                                bottomLeft: options.showCancelButton
-                                    ? const Radius.circular(0)
-                                    : const Radius.circular(vanDialogRadius),
-                                topRight: const Radius.circular(0),
-                                bottomRight:
-                                    const Radius.circular(vanDialogRadius),
-                              ), // 圆角半径
-                            ), // 内边距（可选）
-                          ),
-                          onPressed: options.confirmButtonDisabled
-                              ? null
-                              : () {
-                                  options.onConfirm?.call();
-                                  Navigator.of(context).pop();
-                                  options.onClose?.call();
-                                },
-                          child: Text(
-                            options.confirmButtonText,
-                            style: TextStyle(color: options.confirmButtonColor),
-                          ),
-                        ),
-                      ),
-                    ),
-                ],
-              ),
-
+              if (options.title != null) _titleWidget,
+              _messageWidget(context),
+              _footerWidget(context),
               // Row(
               //   mainAxisAlignment: MainAxisAlignment.center,
               //   children: [
