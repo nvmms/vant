@@ -196,7 +196,7 @@ class _VanDatePickerState extends State<VanDatePicker> {
       initialItem: currentYear,
     );
     _yearScrollController.addListener(() {
-      currentYear = year.indexOf(_monthScrollController.selectedItem);
+      currentYear = year.indexOf(_yearScrollController.selectedItem);
       setState(() {});
     });
 
@@ -275,9 +275,17 @@ class _VanDatePickerState extends State<VanDatePicker> {
           ),
           TextButton(
             onPressed: () {
-              widget.options.onConfirm?.call(
-                "${year[currentYear]}-${month[currentMonth]}-${day[currentDay]}",
-              );
+              List<int> index = [
+                _yearScrollController.selectedItem,
+                _monthScrollController.selectedItem,
+                _dayScrollController.selectedItem,
+              ];
+              List<int> value = [
+                year[_yearScrollController.selectedItem],
+                month[_monthScrollController.selectedItem],
+                day[_dayScrollController.selectedItem],
+              ];
+              widget.options.onConfirm?.call(value.join("-"));
             },
             child: Text(
               widget.options.confirmButtonText,
@@ -328,13 +336,22 @@ class _VanDatePickerState extends State<VanDatePicker> {
                   children: widget.options.columnsType.map((type) {
                     if (type == ColumnsType.year) {
                       return createListWheel(
-                          year, currentYear, _yearScrollController);
+                        year,
+                        currentYear,
+                        _yearScrollController,
+                      );
                     } else if (type == ColumnsType.month) {
                       return createListWheel(
-                          month, currentMonth, _monthScrollController);
+                        month,
+                        currentMonth,
+                        _monthScrollController,
+                      );
                     } else if (type == ColumnsType.day) {
                       return createListWheel(
-                          day, currentDay, _dayScrollController);
+                        day,
+                        currentDay,
+                        _dayScrollController,
+                      );
                     } else {
                       throw UnimplementedError();
                     }
@@ -375,6 +392,7 @@ showVanDatePicker(
       Navigator.of(context).pop();
     },
     onChange: (value) {
+      print(value);
       options.onChange?.call(value);
       Navigator.of(context).pop();
     },
