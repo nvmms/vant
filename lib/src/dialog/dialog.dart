@@ -152,6 +152,8 @@ class _VanDialog extends StatelessWidget {
                               ? null
                               : () {
                                   options.onCancel?.call();
+                                  Navigator.of(context).pop();
+                                  options.onClose?.call();
                                 },
                           child: Text(
                             options.cancelButtonText,
@@ -182,6 +184,8 @@ class _VanDialog extends StatelessWidget {
                               ? null
                               : () {
                                   options.onConfirm?.call();
+                                  Navigator.of(context).pop();
+                                  options.onClose?.call();
                                 },
                           child: Text(
                             options.confirmButtonText,
