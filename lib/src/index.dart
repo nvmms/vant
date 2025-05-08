@@ -1,7 +1,7 @@
 export 'enum.dart';
 
 export 'button/index.dart';
-export 'request/request.dart';
+export 'request/index.dart';
 export 'empty/index.dart';
 export 'vertical_video/index.dart';
 export 'image/index.dart';

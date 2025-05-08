@@ -23,6 +23,12 @@ class VanRequestExample extends StatelessWidget {
         ),
         body: VanRequest(
           provider: provider,
+          header: (context) {
+            return Container(
+              height: 200,
+              color: Colors.red,
+            );
+          },
           itemBuilder: (context, item, index) => Container(
             padding: const EdgeInsets.all(10),
             child: Container(
