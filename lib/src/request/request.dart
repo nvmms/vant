@@ -26,6 +26,7 @@ class VanRequestProvider<T> extends ChangeNotifier {
   int page = 1;
   String? error;
   Completer<IndicatorResult>? completer;
+  bool isLoading = false;
   // EasyRefreshController? _easyRefreshController;
 
   VanRequestProvider() {
@@ -48,9 +49,12 @@ class VanRequestProvider<T> extends ChangeNotifier {
 
   Future<IndicatorResult> loadMore() async {
     if (onQuery == null) return IndicatorResult.fail;
+    if (isLoading) completer!.future;
+    isLoading = true;
     this.page++;
     completer = Completer<IndicatorResult>();
     this.onQuery!(this.page);
+    isLoading = false;
     return completer!.future;
   }
 
