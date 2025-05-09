@@ -54,11 +54,11 @@ class VanRequestProvider<T> extends ChangeNotifier {
     this.page++;
     completer = Completer<IndicatorResult>();
     this.onQuery!(this.page);
-    isLoading = false;
     return completer!.future;
   }
 
   void complete({List<T>? data, int? totalRow, String? error}) {
+    isLoading = false;
     if (error != null) {
       this.error = error;
       // if (easyRefreshStatus == 2 && completer != null) {

@@ -8,7 +8,8 @@ class VanRequestExample extends StatelessWidget {
   Widget build(BuildContext context) {
     VanRequestProvider<String> provider = VanRequestProvider<String>();
     provider.onQuery = (page) {
-      Future.delayed(const Duration(milliseconds: 2000), () {
+      debugPrint("page $page");
+      Future.delayed(const Duration(milliseconds: 50), () {
         provider.complete(
           data: List.generate(20, (index) => "${DateTime.now()}"),
           totalRow: 100,
