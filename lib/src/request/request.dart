@@ -49,7 +49,7 @@ class VanRequestProvider<T> extends ChangeNotifier {
 
   Future<IndicatorResult> loadMore() async {
     if (onQuery == null) return IndicatorResult.fail;
-    if (isLoading) completer!.future;
+    if (isLoading) return completer!.future;
     isLoading = true;
     this.page++;
     completer = Completer<IndicatorResult>();
