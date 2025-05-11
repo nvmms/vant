@@ -103,7 +103,11 @@ class VanRequestProvider<T> extends ChangeNotifier {
       notifyListeners();
       return;
     }
-    this.items.addAll(data);
+    if (page == 1) {
+      this.items = data;
+    } else {
+      this.items.addAll(data);
+    }
     status = VantRequestStatus.complete;
     // if (data == null || data.isEmpty) {
     //   if (easyRefreshStatus == 2 && completer != null) {
