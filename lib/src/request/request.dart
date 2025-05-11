@@ -36,6 +36,26 @@ class VanRequestProvider<T> extends ChangeNotifier {
     // );
   }
 
+  void add(T item) {
+    items.add(item);
+    notifyListeners();
+  }
+
+  void insert(int index, T item) {
+    items.insert(index, item);
+    notifyListeners();
+  }
+
+  void removeAt(int index) {
+    items.removeAt(index);
+    notifyListeners();
+  }
+
+  void remove(T item) {
+    items.remove(item);
+    notifyListeners();
+  }
+
   Future<IndicatorResult> refresh() async {
     completer = Completer<IndicatorResult>();
     if (onQuery == null) {
