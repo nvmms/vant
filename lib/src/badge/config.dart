@@ -6,3 +6,4 @@ const vanBadgePadding = EdgeInsets.symmetric(vertical: 0, horizontal: 3);
 const vanBadgeColor = Colors.white;
 const vanBadgeFontSize = vanFontSizeSm;
 const vanBadgeDotSize = 8.0;
+const vanBadgeHeight = vanLineHeightSm;

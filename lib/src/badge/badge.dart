@@ -74,6 +74,9 @@ class VanBadge extends StatelessWidget {
 
   String get text {
     if (count != null) {
+      if (count! == 0 && !showZero) {
+        return "";
+      }
       if (count! > max) {
         return "$max+";
       }
@@ -89,6 +92,8 @@ class VanBadge extends StatelessWidget {
     if (text.isNotEmpty) {
       return Container(
         padding: vanBadgePadding,
+        constraints: const BoxConstraints(
+            minWidth: vanBadgeHeight, minHeight: vanBadgeHeight),
         decoration: BoxDecoration(
           color: color,
           borderRadius: const BorderRadius.all(
@@ -101,6 +106,7 @@ class VanBadge extends StatelessWidget {
             color: vanBadgeColor,
             fontSize: vanBadgeFontSize,
           ),
+          textAlign: TextAlign.center,
         ),
       );
     } else if (dot == true) {
@@ -121,18 +127,22 @@ class VanBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      clipBehavior: Clip.none,
-      children: [
-        Center(child: child),
-        Positioned(
-          top: top,
-          left: left,
-          right: right,
-          bottom: bottom,
-          child: childContainer,
+    return IntrinsicWidth(
+      child: IntrinsicHeight(
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            child,
+            Positioned(
+              top: top,
+              left: left,
+              right: right,
+              bottom: bottom,
+              child: childContainer,
+            ),
+          ],
         ),
-      ],
+      ),
     );
   }
 }

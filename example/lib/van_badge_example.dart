@@ -12,12 +12,15 @@ class VanBadgeExample extends StatelessWidget {
         child: VanSpace(
           direction: Axis.vertical,
           children: [
-            VanBadge(
-              count: 99,
-              child: Container(
-                width: 100,
-                height: 100,
-                color: Colors.amber,
+            Container(
+              color: Colors.red,
+              child: VanBadge(
+                count: 2,
+                child: Container(
+                  width: 100,
+                  height: 100,
+                  color: Colors.amber,
+                ),
               ),
             ),
             VanBadge(
@@ -29,7 +32,7 @@ class VanBadgeExample extends StatelessWidget {
               ),
             ),
             VanBadge(
-              count: 99,
+              count: 2,
               position: VanBadgePosition.bottomLeft,
               child: Container(
                 width: 100,
@@ -38,7 +41,7 @@ class VanBadgeExample extends StatelessWidget {
               ),
             ),
             VanBadge(
-              count: 99,
+              count: 2,
               position: VanBadgePosition.bottomRight,
               child: Container(
                 width: 100,
