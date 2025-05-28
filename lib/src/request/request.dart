@@ -108,7 +108,12 @@ class VanRequestProvider<T> extends ChangeNotifier {
     } else {
       this.items.addAll(data);
     }
-    status = VantRequestStatus.complete;
+    if (totalRow != null && this.items.length >= totalRow) {
+      status = VantRequestStatus.nomore;
+    } else {
+      status = VantRequestStatus.complete;
+    }
+    // status = VantRequestStatus.complete;
     // if (data == null || data.isEmpty) {
     //   if (easyRefreshStatus == 2 && completer != null) {
     //     completer!.complete(IndicatorResult.noMore);
