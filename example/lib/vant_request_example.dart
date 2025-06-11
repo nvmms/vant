@@ -11,8 +11,8 @@ class VanRequestExample extends StatelessWidget {
       debugPrint("page $page");
       Future.delayed(const Duration(milliseconds: 50), () {
         provider.complete(
-          data: List.generate(20, (index) => "${DateTime.now()}"),
-          totalRow: 100,
+          data: List.generate(10, (index) => "${DateTime.now()}"),
+          totalRow: 10,
         );
       });
     };

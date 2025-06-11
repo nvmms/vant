@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +24,7 @@ class VanRequestProvider<T> extends ChangeNotifier {
   VantRequestQuery<T>? onQuery;
   int page = 1;
   String? error;
-  Completer<IndicatorResult>? completer;
+  Completer<VantRequestStatus>? completer;
   bool isLoading = false;
   // EasyRefreshController? _easyRefreshController;
 
@@ -56,10 +55,11 @@ class VanRequestProvider<T> extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<IndicatorResult> refresh() async {
-    completer = Completer<IndicatorResult>();
+  /// 下拉刷新
+  Future<VantRequestStatus> refresh() async {
+    completer = Completer<VantRequestStatus>();
     if (onQuery == null) {
-      completer!.complete(IndicatorResult.fail);
+      completer!.complete(VantRequestStatus.error);
     } else {
       this.page = 1;
       this.onQuery!(this.page);
@@ -67,12 +67,12 @@ class VanRequestProvider<T> extends ChangeNotifier {
     return completer!.future;
   }
 
-  Future<IndicatorResult> loadMore() async {
-    if (onQuery == null) return IndicatorResult.fail;
+  Future<VantRequestStatus> loadMore() async {
+    if (onQuery == null) return VantRequestStatus.error;
     if (isLoading) return completer!.future;
     isLoading = true;
     this.page++;
-    completer = Completer<IndicatorResult>();
+    completer = Completer<VantRequestStatus>();
     this.onQuery!(this.page);
     return completer!.future;
   }
@@ -92,6 +92,7 @@ class VanRequestProvider<T> extends ChangeNotifier {
       } else {
         status = VantRequestStatus.loadMoreError;
       }
+      completer!.completeError(status);
       return;
     }
     if (data == null || data.isEmpty) {
@@ -100,6 +101,7 @@ class VanRequestProvider<T> extends ChangeNotifier {
       } else {
         status = VantRequestStatus.nomore;
       }
+      completer!.complete(status);
       notifyListeners();
       return;
     }
@@ -113,6 +115,7 @@ class VanRequestProvider<T> extends ChangeNotifier {
     } else {
       status = VantRequestStatus.complete;
     }
+    completer!.complete(status);
     // status = VantRequestStatus.complete;
     // if (data == null || data.isEmpty) {
     //   if (easyRefreshStatus == 2 && completer != null) {
@@ -201,10 +204,10 @@ class VanRequest<T> extends StatefulWidget {
 }
 
 class _VanRequestState<T> extends State<VanRequest<T>> {
-  EasyRefreshController easyRefreshController = EasyRefreshController(
-    controlFinishLoad: true,
-    controlFinishRefresh: true,
-  );
+  // EasyRefreshController easyRefreshController = EasyRefreshController(
+  //   controlFinishLoad: true,
+  //   controlFinishRefresh: true,
+  // );
 
   @override
   void initState() {
@@ -372,38 +375,43 @@ class _VanRequestState<T> extends State<VanRequest<T>> {
               return _error;
             case VantRequestStatus.complete:
             default:
-              return NotificationListener<ScrollNotification>(
-                onNotification: (ScrollNotification notification) {
-                  final currentScroll = notification.metrics.pixels;
-                  final maxScroll = notification.metrics.maxScrollExtent;
-
-                  if (currentScroll + 200 >= maxScroll) {
-                    widget.provider.loadMore();
-                  }
-                  return false;
+              return RefreshIndicator(
+                onRefresh: () {
+                  return widget.provider.refresh();
                 },
-                child: CustomScrollView(
-                  slivers: [
-                    if (widget.header != null) _header,
-                    if (widget.builder != null)
-                      // 将自定义 builder 的内容插入 Sliver 中
-                      _child
-                    else
-                      SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                            return widget.itemBuilder!(
-                              context,
-                              value.$1[index],
-                              index,
-                            );
-                          },
-                          childCount: widget.provider.items.length,
+                child: NotificationListener<ScrollNotification>(
+                  onNotification: (ScrollNotification notification) {
+                    final currentScroll = notification.metrics.pixels;
+                    final maxScroll = notification.metrics.maxScrollExtent;
+
+                    if (currentScroll + 200 >= maxScroll) {
+                      widget.provider.loadMore();
+                    }
+                    return false;
+                  },
+                  child: CustomScrollView(
+                    slivers: [
+                      if (widget.header != null) _header,
+                      if (widget.builder != null)
+                        // 将自定义 builder 的内容插入 Sliver 中
+                        _child
+                      else
+                        SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              return widget.itemBuilder!(
+                                context,
+                                value.$1[index],
+                                index,
+                              );
+                            },
+                            childCount: widget.provider.items.length,
+                          ),
                         ),
-                      ),
-                    if (widget.footer != null) _footer,
-                    if (widget.enablePullUp) _pullUp(value.$2)
-                  ],
+                      if (widget.footer != null) _footer,
+                      if (widget.enablePullUp) _pullUp(value.$2)
+                    ],
+                  ),
                 ),
               );
 
