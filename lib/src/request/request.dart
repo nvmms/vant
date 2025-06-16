@@ -72,6 +72,7 @@ class VanRequestProvider<T> extends ChangeNotifier {
   }
 
   Future<VantRequestStatus?> loadMore() async {
+    if (status == VantRequestStatus.nomore) return null;
     if (isLoadingMore) return null;
     if (onQuery == null) return VantRequestStatus.loadMoreError;
     isLoading = true;
