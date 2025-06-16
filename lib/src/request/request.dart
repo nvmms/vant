@@ -73,11 +73,8 @@ class VanRequestProvider<T> extends ChangeNotifier {
 
   Future<VantRequestStatus?> loadMore() async {
     if (isLoadingMore) return null;
-    print("loadMore 1");
     if (onQuery == null) return VantRequestStatus.loadMoreError;
-    print("loadMore 2");
     isLoading = true;
-    print("isLoading - $isLoading");
     this.page++;
     isLoadingMore = true;
     notifyListeners();
@@ -455,7 +452,6 @@ class _VanRequestState<T> extends State<VanRequest<T>> {
               Selector<VanRequestProvider<T>, bool>(
                 selector: (context, provider) => provider.isLoadingMore,
                 builder: (context, isLoadingMore, child) {
-                  print("isLoadingMore - $isLoadingMore");
                   if (widget.enablePullUp && isLoadingMore) {
                     return _pullUp();
                   } else {
