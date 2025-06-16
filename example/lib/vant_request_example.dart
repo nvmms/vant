@@ -9,10 +9,10 @@ class VanRequestExample extends StatelessWidget {
     VanRequestProvider<String> provider = VanRequestProvider<String>();
     provider.onQuery = (page) {
       debugPrint("page $page");
-      Future.delayed(const Duration(milliseconds: 50), () {
+      Future.delayed(const Duration(seconds: 3), () {
         provider.complete(
-          data: List.generate(10, (index) => "${DateTime.now()}"),
-          totalRow: 10,
+          data: [],
+          totalRow: 0,
         );
       });
     };
