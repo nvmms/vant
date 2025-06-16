@@ -366,16 +366,20 @@ class _VanRequestState<T> extends State<VanRequest<T>> {
             previous.$2 != next.$2 ||
             previous.$3 != next.$3,
         builder: (context, value, child) {
+          Widget content;
           switch (value.$2) {
             case VantRequestStatus.loading:
-              return _loading;
+              content = _loading;
+              break;
             case VantRequestStatus.empty:
-              return _empty;
+              content = _empty;
+              break;
             case VantRequestStatus.error:
-              return _error;
+              content = _error;
+              break;
             case VantRequestStatus.complete:
             default:
-              return RefreshIndicator(
+              content = RefreshIndicator(
                 onRefresh: () {
                   return widget.provider.refresh();
                 },
@@ -391,9 +395,7 @@ class _VanRequestState<T> extends State<VanRequest<T>> {
                   },
                   child: CustomScrollView(
                     slivers: [
-                      if (widget.header != null) _header,
                       if (widget.builder != null)
-                        // 将自定义 builder 的内容插入 Sliver 中
                         _child
                       else
                         SliverList(
@@ -408,136 +410,20 @@ class _VanRequestState<T> extends State<VanRequest<T>> {
                             childCount: widget.provider.items.length,
                           ),
                         ),
-                      if (widget.footer != null) _footer,
                       if (widget.enablePullUp) _pullUp(value.$2)
                     ],
                   ),
                 ),
               );
-
-            // return NotificationListener<ScrollNotification>(
-            //   onNotification: (ScrollNotification notification) {
-            //     // 当前滚动位置
-            //     final currentScroll = notification.metrics.pixels;
-            //     // 最大可滚动距离
-            //     final maxScroll = notification.metrics.maxScrollExtent;
-
-            //     if (currentScroll + 200 >= maxScroll) {
-            //       // 即将到底底部
-            //       widget.provider.loadMore();
-            //     }
-            //     return false; // false 表示继续向上传递通知
-            //   },
-            //   child: widget.builder != null
-            //       ? widget.builder!(context, value.$1)
-            //       : ListView.builder(
-            //           padding: widget.padding,
-            //           itemCount: trueLength,
-            //           itemBuilder: (context, index) {
-            //             var nowIndex = index;
-            //             if (widget.header != null) {
-            //               if (index == 0) {
-            //                 return widget.header!(context);
-            //               } else {
-            //                 nowIndex = nowIndex - 1;
-            //               }
-            //             }
-            //             if (widget.footer != null &&
-            //                 index == trueLength - 1) {
-            //               return widget.footer!(context);
-            //             }
-            //             if (widget.enablePullUp && index == trueLength - 1) {
-            //               if (value.$2 == VantRequestStatus.nomore) {
-            //                 return _nomore;
-            //               } else if (value.$2 ==
-            //                   VantRequestStatus.loadMoreError) {
-            //                 return _loadMoreError;
-            //               } else {
-            //                 return _loadingMore;
-            //               }
-            //             }
-            //             return widget.itemBuilder!(
-            //               context,
-            //               value.$1[nowIndex],
-            //               nowIndex,
-            //             );
-            //           },
-            //         ),
-            // );
-
-            // if (widget.builder != null) {
-            //   return widget.builder!(context, value.$1);
-            // } else {
-            //   return ListView.builder(
-            //     padding: widget.padding,
-            //     itemCount: trueLength,
-            //     itemBuilder: (context, index) {
-            //       var nowIndex = index;
-            //       if (widget.header != null) {
-            //         if (index == 0) {
-            //           return widget.header!(context);
-            //         } else {
-            //           nowIndex = nowIndex - 1;
-            //         }
-            //       }
-            //       if (widget.footer != null && index == trueLength - 1) {
-            //         return widget.footer!(context);
-            //       }
-            //       if (widget.enablePullUp && index == trueLength - 1) {
-            //         if (value.$2 == VantRequestStatus.nomore) {
-            //           return Text("暂无更多数据");
-            //         } else if (value.$2 == VantRequestStatus.loadMoreError) {
-            //           return Text(widget.provider.error ?? "请求发生异常");
-            //         } else {
-            //           return Text("数据加载中...");
-            //         }
-            //       }
-            //       return widget.itemBuilder!(
-            //         context,
-            //         value.$1[nowIndex],
-            //         nowIndex,
-            //       );
-            //     },
-            //   );
-            // }
-
-            // return EasyRefresh(
-            //   controller: widget.provider._easyRefreshController,
-            //   onRefresh: () {
-            //     widget.provider.easyRefreshStatus = 1;
-            //     return widget.provider.refresh();
-            //   },
-            //   onLoad: () {
-            //     widget.provider.easyRefreshStatus = 2;
-            //     return widget.provider.loadMore();
-            //   },
-            //   header: widget.refreshHeader,
-            //   footer: widget.refreshFooter,
-            //   child: widget.builder?.call(context, value.$1) ??
-            //       ListView.builder(
-            //         padding: widget.padding,
-            //         itemCount: trueLength,
-            //         itemBuilder: (context, index) {
-            //           var nowIndex = index;
-            //           if (widget.header != null && index == 0) {
-            //             if (index == 0) {
-            //               return widget.header!(context);
-            //             } else {
-            //               nowIndex = nowIndex - 1;
-            //             }
-            //           }
-            //           if (widget.footer != null && index == trueLength - 1) {
-            //             return widget.footer!(context);
-            //           }
-            //           return widget.itemBuilder!(
-            //             context,
-            //             value.$1[nowIndex],
-            //             nowIndex,
-            //           );
-            //         },
-            //       ),
-            // );
           }
+
+          return CustomScrollView(
+            slivers: [
+              if (widget.header != null) _header,
+              SliverToBoxAdapter(child: content),
+              if (widget.footer != null) _footer,
+            ],
+          );
         },
       ),
     );
