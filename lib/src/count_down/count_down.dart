@@ -19,7 +19,7 @@ class VanCountDownController {
     _state!._resetTimer();
   }
 
-  Duration get currentDuration {
+  Duration? get currentDuration {
     assert(_state != null, 'Controller not attached to any VanCountDown');
     return _state!._remainingTime;
   }
@@ -47,7 +47,7 @@ class VanCountDown extends StatefulWidget {
   final String format;
   final bool autoStart;
   final bool millisecond;
-  final Widget Function(Duration duration)? child;
+  final Widget Function(Duration? duration)? child;
   final VoidCallback? onFinish;
   final ValueChanged<Duration>? onChange;
   final VanCountDownController? controller;
@@ -57,18 +57,16 @@ class VanCountDown extends StatefulWidget {
 }
 
 class _VanCountDownState extends State<VanCountDown> {
-  late Duration _remainingTime;
+  Duration? _remainingTime;
   late ValueNotifier<String> _formatted;
   Timer? _timer;
 
   @override
   void initState() {
     super.initState();
-    _remainingTime = widget.time;
+    // _remainingTime = widget.time;
     _formatted = ValueNotifier(_formatDuration(_remainingTime));
-
     widget.controller?._state = this;
-
     if (widget.autoStart) {
       _startTimer();
     }
@@ -94,7 +92,9 @@ class _VanCountDownState extends State<VanCountDown> {
 
   void _startTimer() {
     if (_timer?.isActive ?? false) return;
-
+    if (_remainingTime == null) {
+      _remainingTime = widget.time;
+    }
     final duration = widget.millisecond
         ? const Duration(milliseconds: 16)
         : const Duration(seconds: 1);
@@ -104,19 +104,22 @@ class _VanCountDownState extends State<VanCountDown> {
         timer.cancel();
         return;
       }
-
+      if (_remainingTime == null) {
+        timer.cancel();
+        return;
+      }
       final milliseconds =
-          _remainingTime.inMilliseconds - (widget.millisecond ? 16 : 1000);
+          _remainingTime!.inMilliseconds - (widget.millisecond ? 16 : 1000);
 
       if (milliseconds <= 0) {
-        _remainingTime = Duration.zero;
+        _remainingTime = null;
         _formatted.value = _formatDuration(_remainingTime);
         timer.cancel();
         widget.onFinish?.call();
       } else {
         _remainingTime = Duration(milliseconds: milliseconds);
         _formatted.value = _formatDuration(_remainingTime);
-        widget.onChange?.call(_remainingTime);
+        widget.onChange?.call(_remainingTime!);
       }
     });
   }
@@ -134,8 +137,8 @@ class _VanCountDownState extends State<VanCountDown> {
     }
   }
 
-  String _formatDuration(Duration duration) {
-    if (duration.isNegative) return "00:00:00";
+  String _formatDuration(Duration? duration) {
+    if (duration == null || duration.isNegative) return "00:00:00";
 
     final format = widget.format;
     int remainingMillis = duration.inMilliseconds;
