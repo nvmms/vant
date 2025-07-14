@@ -78,8 +78,13 @@ class VanActionBar extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(icon.icon, size: 18, color: icon.color),
-              Text(icon.text, style: TextStyle(fontSize: 12)),
+              Badge(
+                smallSize: 5,
+                label: Text("${icon.coutent ?? icon.count ?? ""} "),
+                isLabelVisible: icon.coutent != null || icon.count != null,
+                child: Icon(icon.icon, size: 18, color: icon.color),
+              ),
+              Text(icon.text, style: const TextStyle(fontSize: 12)),
             ],
           ),
         ),
@@ -145,33 +150,33 @@ class VanActionBar extends StatelessWidget {
     );
   }
 
-  Widget _buildBadge(VanActionBarBadge badge, BuildContext context) {
-    return Container(
-      padding: badge.padding ??
-          EdgeInsets.symmetric(
-            horizontal: badge.dot ? 3 : 4,
-            vertical: badge.dot ? 3 : 1,
-          ),
-      constraints: BoxConstraints(
-        minWidth: badge.dot ? 6 : 0,
-        minHeight: badge.dot ? 6 : 0,
-      ),
-      decoration: BoxDecoration(
-        color: badge.backgroundColor ?? Theme.of(context).colorScheme.error,
-        borderRadius: BorderRadius.circular(badge.radius ?? 10),
-      ),
-      child: badge.dot
-          ? null
-          : Text(
-              badge.content!,
-              style: badge.textStyle ??
-                  TextStyle(
-                    color: badge.textColor ?? Colors.white,
-                    fontSize: badge.fontSize ?? 10,
-                  ),
-            ),
-    );
-  }
+  // Widget _buildBadge(BuildContext context) {
+  //   return Container(
+  //     padding: badge.padding ??
+  //         EdgeInsets.symmetric(
+  //           horizontal: badge.dot ? 3 : 4,
+  //           vertical: badge.dot ? 3 : 1,
+  //         ),
+  //     constraints: BoxConstraints(
+  //       minWidth: badge.dot ? 6 : 0,
+  //       minHeight: badge.dot ? 6 : 0,
+  //     ),
+  //     decoration: BoxDecoration(
+  //       color: badge.backgroundColor ?? Theme.of(context).colorScheme.error,
+  //       borderRadius: BorderRadius.circular(badge.radius ?? 10),
+  //     ),
+  //     child: badge.dot
+  //         ? null
+  //         : Text(
+  //             badge.content!,
+  //             style: badge.textStyle ??
+  //                 TextStyle(
+  //                   color: badge.textColor ?? Colors.white,
+  //                   fontSize: badge.fontSize ?? 10,
+  //                 ),
+  //           ),
+  //   );
+  // }
 }
 
 /// 图标按钮组件 (对应 van-action-bar-icon)
@@ -191,16 +196,21 @@ class VanActionBarIcon {
   /// 图标颜色
   final Color? color;
 
+  final int? count;
+
+  final String? coutent;
+
   /// 徽标
-  final VanActionBarBadge? badge;
+  // final VanActionBarBadge? badge;
 
   const VanActionBarIcon({
     required this.icon,
     this.onPressed,
-    this.text = "",
+    required this.text,
+    this.count,
     this.textColor,
     this.color,
-    this.badge,
+    this.coutent,
   });
 }
 
@@ -250,43 +260,43 @@ class VanActionBarButton {
   }
 }
 
-/// 徽标组件
-class VanActionBarBadge {
-  /// 徽标内容
-  final String? content;
+// /// 徽标组件
+// class VanActionBarBadge {
+//   /// 徽标内容
+//   final String? content;
 
-  /// 是否为圆点
-  final bool dot;
+//   /// 是否为圆点
+//   final bool dot;
 
-  /// 背景颜色
-  final Color? backgroundColor;
+//   /// 背景颜色
+//   final Color? backgroundColor;
 
-  /// 文字颜色
-  final Color? textColor;
+//   /// 文字颜色
+//   final Color? textColor;
 
-  /// 文字样式
-  final TextStyle? textStyle;
+//   /// 文字样式
+//   final TextStyle? textStyle;
 
-  /// 文字大小
-  final double? fontSize;
+//   /// 文字大小
+//   final double? fontSize;
 
-  /// 圆角
-  final double? radius;
+//   /// 圆角
+//   final double? radius;
 
-  /// 内边距
-  final EdgeInsets? padding;
+//   /// 内边距
+//   final EdgeInsets? padding;
 
-  const VanActionBarBadge({
-    this.content,
-    this.dot = false,
-    this.backgroundColor,
-    this.textColor,
-    this.textStyle,
-    this.fontSize,
-    this.radius,
-    this.padding,
-  }) : assert(content != null || dot, 'Either content or dot must be provided');
-}
+//   const VanActionBarBadge({
+//     this.content,
+//     this.dot = false,
+//     this.backgroundColor,
+//     this.textColor,
+//     this.textStyle,
+//     this.fontSize,
+//     this.radius,
+//     this.padding,
+//   }) : assert(content != null || dot, 'Either content or dot must be provided');
+// }
 
 enum VantActionBarButtonType {
   defaultType,

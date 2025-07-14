@@ -16,13 +16,12 @@ class VanActionBarExample extends StatelessWidget {
             icon: Icons.chat,
             text: "客服",
             onPressed: () => print('客服'),
-            badge: VanActionBarBadge(dot: true),
+            count: 5,
           ),
           VanActionBarIcon(
             icon: Icons.shopping_cart,
             text: "购物车",
             onPressed: () => print('购物车'),
-            badge: VanActionBarBadge(content: '5'),
           ),
           VanActionBarIcon(
             icon: Icons.star,
