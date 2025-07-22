@@ -160,18 +160,22 @@ class VanCell extends StatelessWidget {
                   child: extraWidget!,
                 ),
               if (valueWidget != null)
-                Padding(
-                  padding: const EdgeInsets.only(left: 12.0),
-                  child: valueWidget!,
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 12.0),
+                    child: valueWidget!,
+                  ),
                 )
               else if (value != null)
-                Padding(
-                  padding: const EdgeInsets.only(left: 12.0),
-                  child: Text(
-                    value!,
-                    style:
-                        textTheme.bodyMedium?.copyWith(color: Colors.grey[600]),
-                    textAlign: TextAlign.right,
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 12.0),
+                    child: Text(
+                      value!,
+                      style: textTheme.bodyMedium
+                          ?.copyWith(color: Colors.grey[600]),
+                      textAlign: TextAlign.right,
+                    ),
                   ),
                 ),
               if (selectable == true)

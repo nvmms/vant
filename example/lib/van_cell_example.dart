@@ -14,7 +14,8 @@ class VanCellExample extends StatelessWidget {
         children: [
           VanCell(
             title: "标题",
-            value: "内容",
+            value:
+                "内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容内容",
             label: "标签",
             size: 16,
             icon: Icons.access_alarm,
